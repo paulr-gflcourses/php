@@ -1,31 +1,36 @@
 <?php
 
+function getFileSize($fsize){
+    $sizeKb=10;#intdiv($fsize,1024);
+    return "$sizeKb kB";
+}
+
 function upload(){
     print "UPLOAD";
 
 
     $file=$_FILES['file'];
     $filename=$file['name'];
-    echo "\n---fname=".$filename;
-    print "\n--files: ";
-    
-    if (move_uploaded_file($filename, FILE_DIR."/".$filename)){
-        echo "Файл корректен и был успешно загружен.\n";
-    } else {
-            echo "Возможная атака с помощью файловой загрузки!\n";
-    }
+    $fsize=getFileSize($file['size']);
+    echo "\n---fname=".FILE_DIR.$filename.", size = $fsize";
+    echo "\n--files: ";
 
-    $files=$_SESSION['files'];
-    $files[] = [$file['name'],$file['size']];
-    print_r($files);
-    $_SESSION['files']=$files;
+    if (move_uploaded_file($file['tmp_name'], __DIR__ . "/files/" . $filename)){
+        $files=$_SESSION['files'];
+        $files[] = [$filename,$fsize];
+        print_r($files);
+        $_SESSION['files']=$files;
+
+    } else {
+        echo "Uploading failed!";
+    }
 }
+
+
 
 function listing(){
 }
 
-function getFileSize(){
-}
 
 function remove(){
     echo "REMOVE!";

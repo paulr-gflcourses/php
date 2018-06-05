@@ -26,19 +26,11 @@
         $files=$_SESSION['files'];
         foreach($files as $i=>$file){
             print "<tr>";
-            print "<td>".($i+1)."</td><td>".$file[0]."</td><td>".$file[1]."</td><td>"."<a href='index.php?action=remove'>Delete</a>"."</td>";
+            print "<td>".($i+1)."</td><td>".$file[0]."</td><td>".$file[1]."</td><td>"."<a href='index.php?action=remove&id=$i'>Delete</a>"."</td>";
            print "</tr>"; 
         }
 
         print_r($_FILES);
-/*
-        foreach($_FILES as $file){
-            print "<tr>";
-            print "<td></td><td>".$file['name']."</td><td></td><td></td>";
-            print "</tr>";
-        }
-        print_r($_FILES);
- */
     ?>
 </table>
 

@@ -14,7 +14,7 @@ if($_SESSION['files']){
 if ($action=$_GET['action']){
     print "action=$action";
     switch ($action){
-        case 'upload':
+    case 'upload':
             upload();
             break;
         case 'remove':
