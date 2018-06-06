@@ -1,4 +1,4 @@
 <?php
-    define("TEMPLATE_DIR","./templates/");
-    define("FILE_DIR","./files/");
+    define("TEMPLATE_DIR",__DIR__."/templates/");
+    define("FILE_DIR",__DIR__."/files/");
 ?>
