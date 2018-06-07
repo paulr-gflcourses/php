@@ -20,32 +20,22 @@ class MySQL extends SQL
     function connect()
     {
         parent::connect();
-        try {
             $dsn = "mysql:host=".HOSTNAME.";dbname=".DBNAME;
             $link = new PDO($dsn, USERNAME, PASSWORD);
-            $this->setDblink($link);
-
-        } catch (PDOException $e) {
-            print "Error!: " . $e->getMessage() . "<br/>";
-            die();
-        }
+            $this->link=$link;
+        
     }
 
     function select()
     {
-        $link = $this->getDblink();
+        $link = $this->link;
 
-        try {
-            $res = $link->query("SELECT userid,userdata from $this->table");
+        $res = $link->query("SELECT userid,userdata from $this->table");
+        /*
             foreach($res as $row) {
                 print_r($row);
             }
-
-        } catch (PDOException $e) {
-            print "Error!: " . $e->getMessage() . "<br/>";
-            die();
-        }
-
+         */
         return $res->fetch();
     }
 

@@ -37,7 +37,7 @@ class SQL
     {
     }
 
-
+/*
     function getDblink()
     {
         return $this->dblink;
@@ -47,6 +47,7 @@ class SQL
     {
         $this->dbLink = $dbLink;
     }
+ */
 }
 
 ?>
