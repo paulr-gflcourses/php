@@ -1,0 +1,49 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+DBNAME	config.php	/^    define("DBNAME","user1");$/;"	d
+FILE_DIR	config.php	/^    define("FILE_DIR",__DIR__."\/files\/");$/;"	d
+HOSTNAME	config.php	/^    define("HOSTNAME","127.0.0.1");$/;"	d
+MySQL	libs/MySQL.php	/^class MySQL extends SQL$/;"	c
+PASSWORD	config.php	/^    define("PASSWORD","user1");$/;"	d
+PostgreSQL	libs/PostgreSQL.php	/^class PostgreSQL extends SQL$/;"	c
+SQL	libs/SQL.php	/^class SQL$/;"	c
+TABLE_MYSQL	config.php	/^    define("TABLE_MYSQL","MY_TEST");$/;"	d
+TABLE_POSTGRESQL	config.php	/^    define("TABLE_POSTGRESQL","PG_TEST");$/;"	d
+TEMPLATE_DIR	config.php	/^    define("TEMPLATE_DIR",__DIR__."\/templates\/");$/;"	d
+USERNAME	config.php	/^    define("USERNAME","user1");$/;"	d
+__construct	libs/MySQL.php	/^    function __construct(){$/;"	f
+__construct	libs/SQL.php	/^    function __construct(){$/;"	f
+connect	libs/MySQL.php	/^    function connect()$/;"	f
+connect	libs/PostgreSQL.php	/^    function connect()$/;"	f
+connect	libs/SQL.php	/^    function connect()$/;"	f
+dblink	libs/SQL.php	/^    protected $dblink;$/;"	v
+delete	libs/MySQL.php	/^    function delete()$/;"	f
+delete	libs/PostgreSQL.php	/^    function delete()$/;"	f
+delete	libs/SQL.php	/^    function delete()$/;"	f
+dsn	libs/MySQL.php	/^        $dsn = "mysql:host=".HOSTNAME.";dbname=".DBNAME;$/;"	v
+getDblink	libs/SQL.php	/^    function getDblink()$/;"	f
+getTable	libs/MySQL.php	/^    function getTable()$/;"	f
+getTable	libs/PostgreSQL.php	/^    function getTable()$/;"	f
+getTable	libs/SQL.php	/^    function getTable()$/;"	f
+insert	libs/MySQL.php	/^    function insert()$/;"	f
+insert	libs/PostgreSQL.php	/^    function insert()$/;"	f
+insert	libs/SQL.php	/^    function insert()$/;"	f
+link	libs/MySQL.php	/^        $link = $this->getDblink();$/;"	v
+link	libs/MySQL.php	/^        $link = new PDO($dsn, USERNAME, PASSWORD);$/;"	v
+mysql	index.php	/^$mysql = new MySQL();$/;"	v
+res	libs/MySQL.php	/^        $res = $link->query("SELECT userid from MY_TEST");#.TABLE_MYSQL);$/;"	v
+select	libs/MySQL.php	/^    function select()$/;"	f
+select	libs/PostgreSQL.php	/^    function select()$/;"	f
+select	libs/SQL.php	/^    function select()$/;"	f
+selectResult	index.php	/^$selectResult = $mysql->select();$/;"	v
+setDblink	libs/SQL.php	/^    function setDblink()$/;"	f
+setTable	libs/MySQL.php	/^    function setTable()$/;"	f
+setTable	libs/PostgreSQL.php	/^    function setTable()$/;"	f
+setTable	libs/SQL.php	/^    function setTable()$/;"	f
+update	libs/MySQL.php	/^    function update()$/;"	f
+update	libs/PostgreSQL.php	/^    function update()$/;"	f
+update	libs/SQL.php	/^    function update()$/;"	f

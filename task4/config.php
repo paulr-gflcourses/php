@@ -2,6 +2,7 @@
 
     define("TEMPLATE_DIR",__DIR__."/templates/");
     define("FILE_DIR",__DIR__."/files/");
+    define("TITLE","task4");
 
     #define("HOSTNAME","192.168.0.15");
     define("HOSTNAME","127.0.0.1");

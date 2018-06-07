@@ -2,4 +2,6 @@
 include_once "config.php";
 
 
+include_once TEMPLATE_DIR."index.php";
+
 ?>

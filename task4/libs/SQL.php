@@ -40,11 +40,12 @@ class SQL
 
     function getDblink()
     {
-        return $dblink;
+        return $this->dblink;
     }
 
-    function setDblink()
+    function setDblink($dbLink)
     {
+        $this->dbLink = $dbLink;
     }
 }
 

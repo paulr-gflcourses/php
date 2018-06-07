@@ -3,7 +3,8 @@ include_once "config.php";
 ?>
 
 <html>
-<head><title>task4</title></head>
+<head><title><?php echo TITLE ?></title></head>
+
 
 <body>
     <h2>Connecting to database user1/user1.</h2>
@@ -25,5 +26,6 @@ include_once "config.php";
    <?php echo $selectQuery; ?>
 </p>
 </body>
+
 
 </html>
