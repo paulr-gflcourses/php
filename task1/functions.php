@@ -1,7 +1,7 @@
 <?php
 
 function getFileSize($fsize){
-    $sizeKb=10;#intdiv($fsize,1024);
+    $sizeKb=floor($fsize/1024);
     return "$sizeKb kB";
 }
 
@@ -15,9 +15,9 @@ function upload(){
     echo "\n---fname=".FILE_DIR.$filename.", size = $fsize";
     echo "\n--files: ";
 
-    if (move_uploaded_file($file['tmp_name'], __DIR__ . "/files/" . $filename)){
+    if (move_uploaded_file($file['tmp_name'],  FILE_DIR.$filename)){
         $files=$_SESSION['files'];
-        $files[] = [$filename,$fsize];
+        $files[$filename] = $fsize;
         print_r($files);
         $_SESSION['files']=$files;
 
@@ -32,8 +32,12 @@ function listing(){
 }
 
 
-function remove(){
+function remove($filename){    
     echo "REMOVE!";
+    unlink(FILE_DIR.$filename);
+    $files = $_SESSION['files'];
+    unset($_SESSION['files'][$filename]);
+
 }
 
 ?>

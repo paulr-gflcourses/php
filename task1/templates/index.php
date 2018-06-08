@@ -23,15 +23,17 @@
         <th>Command</th>
     </tr>
 <?php
-        $files=$_SESSION['files'];
-        foreach($files as $i=>$file){
-            print "<tr>";
-            print "<td>".($i+1)."</td><td>".$file[0]."</td><td>".$file[1]."</td><td>"."<a href='index.php?action=remove&id=$i'>Delete</a>"."</td>";
-           print "</tr>"; 
-        }
+$files=$_SESSION['files'];
+$i=1;
+foreach($files as $file=>$size){
+    print "<tr>";
+    print "<td>".($i+1)."</td><td>".$file."</td><td>".$size."</td><td>"."<a href='index.php?action=remove&file=$file'>Delete</a>"."</td>";
+    print "</tr>"; 
+    $i++;
+}
 
-        print_r($_FILES);
-    ?>
+print_r($_FILES);
+?>
 </table>
 
 </body>
