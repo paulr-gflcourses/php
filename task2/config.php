@@ -3,5 +3,6 @@
 	define("TEMPLATE",TEMPLATE_DIR."index.php");
 	define("TITLE","task2");
 	
-	define("ERR_FILE_NOT_FOUND","No such file!");
+	define("DIVISION_BY_ZERO","Error: You can't divide by zero!");
+	define("NEGATIVE_SQUARE_ROOT","Error: Square root operand cannot be negative!");
 ?>

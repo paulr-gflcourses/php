@@ -11,12 +11,12 @@ function upload()
 	
     $file=$_FILES['file'];
     $filename=$file['name'];
-	chmod(FILE_DIR,0777);
-    if (!move_uploaded_file($file['tmp_name'],  FILE_DIR.$filename))
+    
+    if (is_writable(FILE_DIR)&&(!move_uploaded_file($file['tmp_name'],  FILE_DIR.$filename)))
 	{
-        $errorUploading = true;
+        return ERROR_UPLOADING;
     }
-	
+	return '';
 }
 
 
@@ -40,18 +40,18 @@ function listing()
 
 
 function remove($filename){  
-	chmod(FILE_DIR,0777);
 	if (file_exists(FILE_DIR.$filename))
 	{
-		 if (!unlink(FILE_DIR.$filename))
+		 if (is_writable(FILE_DIR)&&(!unlink(FILE_DIR.$filename)))
 		 {
-			$errorRemoving = true;
+             return ERROR_REMOVING;
 		 }
 	}else 
 	{
-		$errorFileNotFound = true;
+        return ERR_FILE_NOT_FOUND;
 	}
 
+    return '';
 }
 
 ?>

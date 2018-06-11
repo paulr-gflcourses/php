@@ -9,7 +9,9 @@ class Controller
 		{		
 		    $this->model = new Model();
 			$this->view = new View(TEMPLATE);	
-				
+
+            $search = 'php';
+            $this->model->getPage('https://www.google.com.ua/search?q='.$search);
 			if(isset($_POST['email']))
 			{	
 				$this->pageSendMail();
@@ -19,7 +21,6 @@ class Controller
 				$this->pageDefault();	
 			}
 			
-            throw new Exception('test exception');
 			$this->view->templateRender();			
 	    }	
 		

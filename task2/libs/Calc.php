@@ -20,7 +20,6 @@ class Calc
     {
         return $this->a-$this->b;
     }
-
     public function multiply()
     {
         return $this->a*$this->b;
@@ -28,24 +27,32 @@ class Calc
 
     public function divide()
     {
-        return $this->a*$this->b;
+        if ($this->b==0)
+        {
+            return DIVISION_BY_ZERO;
+        }
+        return $this->a/$this->b;
     }
     
 
     public function squareRoot()
     {
+        if ($this->a<0)
+        {
+            return NEGATIVE_SQARE_ROOT;
+        }
         return sqrt($this->a);
     }
 
     public function mod()
     {
-        return $this->a;//%$this->b;
+        return $this->a%$this->b;
     }
 
 
     public function frac()
     {
-        return 1;///$this->a;
+        return 1/$this->a;
     }
 
     public function neg()
@@ -62,13 +69,10 @@ class Calc
 
     public function setMem($a)
     {
+        $this->a = $a;
 		$this->mem = $a;
     }
 
-    public function negateMem()
-    {
-		$this->mem = -$this->mem;
-    }
 }
 
 ?>

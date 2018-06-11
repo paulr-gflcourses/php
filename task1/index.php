@@ -1,21 +1,20 @@
 <?php
 include_once 'config.php';
-$errorUploading=false;
-$errorRemoving=false;
-$errorFileNotFound=false;
+
+$errorUpload='';
+$errorRemove='';
+
 include_once 'functions.php';
-
-
 
 if (isset($_GET['action'])){
 	$action=$_GET['action'];
     switch ($action){
     case 'upload':
-        upload();
+        $errorUpload = upload();
         break;
     case 'remove':
         $file = $_GET['file'];
-        remove($file);
+        $errorRemove = remove($file);
         break;
     }
 }
