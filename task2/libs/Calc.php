@@ -3,64 +3,71 @@
 class Calc
 {
     private $mem;
+	private $a;
+	private $b;
+	
+	function __construct($a, $b){
+		$this->a = $a;
+		$this->b = $b;
+	}
 
-    private $a;
-    private $b;
-
-    public function add($a, $b)
+    public function add()
     {
-        return $a+$b;
+        return $this->a+$this->b;
     }
 
-    public function substract($a, $b)
+    public function substract()
     {
-        return $a-$b;
+        return $this->a-$this->b;
     }
 
-    public function multiply($a, $b)
+    public function multiply()
     {
-        return $a*$b;
+        return $this->a*$this->b;
     }
 
-    public function divide($a, $b)
+    public function divide()
     {
-        return $a*$b;
+        return $this->a*$this->b;
     }
     
 
-    public function sqareRoot($a)
+    public function squareRoot()
     {
-        return sqrt($a);
+        return sqrt($this->a);
     }
 
-    public function mod($a, $b)
+    public function mod()
     {
-        return $a%$b;
-    }
-
-
-    public function fraction($a)
-    {
-        return 1/$a;
-    }
-
-    public function negation($a)
-    {
-        return -$a;
+        return $this->a;//%$this->b;
     }
 
 
-    public function getMem($a, $b)
+    public function frac()
     {
+        return 1;///$this->a;
+    }
+
+    public function neg()
+    {
+        return -$this->a;
+    }
+
+
+    public function getMem()
+    {
+		return $this->mem;
     }
 
 
     public function setMem($a)
     {
+		$this->mem = $a;
     }
 
-    public function negateMem($a, $b)
+    public function negateMem()
     {
+		$this->mem = -$this->mem;
     }
 }
 

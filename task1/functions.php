@@ -1,42 +1,56 @@
 <?php
 
-function getFileSize($fsize){
-    $sizeKb=floor($fsize/1024);
-    return "$sizeKb kB";
+function getFileSize($fname)
+{
+    $size=ceil(filesize($fname)/1024);
+    return "$size kB";
 }
 
-function upload(){
-    print "UPLOAD";
-
-
+function upload()
+{
+	
     $file=$_FILES['file'];
     $filename=$file['name'];
-    $fsize=getFileSize($file['size']);
-    echo "\n---fname=".FILE_DIR.$filename.", size = $fsize";
-    echo "\n--files: ";
-
-    if (move_uploaded_file($file['tmp_name'],  FILE_DIR.$filename)){
-        $files=$_SESSION['files'];
-        $files[$filename] = $fsize;
-        print_r($files);
-        $_SESSION['files']=$files;
-
-    } else {
-        echo "Uploading failed!";
+	chmod(FILE_DIR,0777);
+    if (!move_uploaded_file($file['tmp_name'],  FILE_DIR.$filename))
+	{
+        $errorUploading = true;
     }
+	
 }
 
 
 
-function listing(){
+function listing()
+{
+	$allFiles = scandir(FILE_DIR);
+	$files = array();
+	foreach($allFiles as $file)
+	{
+		if (is_dir($file))
+		{
+			unset($allFiles[$file]);
+		}else
+		{
+			$files[$file] = getFileSize(FILE_DIR.$file);
+		}
+	}
+	return $files;
 }
 
 
-function remove($filename){    
-    echo "REMOVE!";
-    unlink(FILE_DIR.$filename);
-    $files = $_SESSION['files'];
-    unset($_SESSION['files'][$filename]);
+function remove($filename){  
+	chmod(FILE_DIR,0777);
+	if (file_exists(FILE_DIR.$filename))
+	{
+		 if (!unlink(FILE_DIR.$filename))
+		 {
+			$errorRemoving = true;
+		 }
+	}else 
+	{
+		$errorFileNotFound = true;
+	}
 
 }
 

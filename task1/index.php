@@ -1,19 +1,14 @@
 <?php
 include_once 'config.php';
+$errorUploading=false;
+$errorRemoving=false;
+$errorFileNotFound=false;
 include_once 'functions.php';
 
-session_start();
 
-//$files=['Doc.txt'=>'15 kB'];
-$files=[];
-if($_SESSION['files']){
-    $files=$_SESSION['files'];
-}else{
-    $_SESSION['files']=$files;
-}
 
-if ($action=$_GET['action']){
-    print "action=$action";
+if (isset($_GET['action'])){
+	$action=$_GET['action'];
     switch ($action){
     case 'upload':
         upload();
@@ -23,8 +18,9 @@ if ($action=$_GET['action']){
         remove($file);
         break;
     }
-
 }
+
+$files = listing();
 
 include_once TEMPLATE_DIR.'/index.php';
 

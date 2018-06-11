@@ -1,46 +1,23 @@
 <?php
-include 'config.php';
-include 'libs/Calc.php';
+include_once 'config.php';
+include_once 'libs/Calc.php';
 
-session_start();
+$a = 5;
+$b = 6;
 
-$result = 0;
-if ($_GET['action'])
-{
-    echo $_GET['action'];
-    $a = $_GET['a'];
-    $b = $_GET['b'];
+$calc = new Calc($a, $b);
 
-    switch ($action)
-    {
-    case 'add':
-        $result = add($a,$b); 
-        break;
-    case 'sub':
-        $result = substract($a,$b); 
-        break;
-    case 'mul':
-        $result = multiply($a,$b); 
-        break;
-    case 'div':
-        $result = divide($a,$b); 
-        break;
-    case 'sqrt':
-        $result = squareRoot($a); 
-        break;
-    case 'mod':
-        $result = mod($a,$b); 
-        break;
-    case 'frac':
-        $result = fraction($a); 
-        break;
-    case 'neg':
-        $result = negation($a); 
-        break;
-    }
-}
+$add = $calc->add();
+$substract = $calc->substract();
+$multiply = $calc->multiply();
+$divide = $calc->divide();
+$squareRoot = $calc->squareRoot();
+$mod = $calc->mod();
+$frac = $calc->frac();
+$neg = $calc->neg();
 
 
-include 'templates/index.php';
+
+include_once TEMPLATE;
 
 ?>
