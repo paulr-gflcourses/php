@@ -2,8 +2,8 @@
 include_once 'config.php';
 include_once 'libs/Calc.php';
 
-$a = 9;
-$b = 3;
+$a = -3;
+$b = 0;
 
 $calc = new Calc($a, $b);
 

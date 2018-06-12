@@ -38,15 +38,15 @@ if ($files)
 	$i=1;
 foreach($files as $file=>$size)
 {
-    print "<tr>";
-    print "<td>".($i+1)."</td><td>".$file."</td><td>".$size."</td><td>"."<a href='index.php?action=remove&file=$file'>Delete</a>"."</td>";
-    print "</tr>"; 
+    echo "<tr>";
+    echo "<td>".($i+1)."</td><td>".$file."</td><td>".$size."</td><td>"."<a href='index.php?action=remove&file=$file'>Delete</a>"."</td>";
+    echo "</tr>"; 
     $i++;
 }
 echo "</table>";
 }else
 {
-	print "<h3>No files uploaded!</h3>";
+	echo "<h3>No files uploaded!</h3>";
 }
 
 if ($errorUpload)
@@ -59,10 +59,6 @@ if ($errorRemove)
 echo "<p class='errors'>Error: ".$errorRemove."</p>";
 }
 
-if ($errorFileNotFound)
-{
-echo "<p class='errors'>Error: ".$errorFileNotFound."</p>";
-}
 ?>
 
 

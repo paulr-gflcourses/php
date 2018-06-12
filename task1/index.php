@@ -21,7 +21,7 @@ if (isset($_GET['action'])){
 
 $files = listing();
 
-include_once TEMPLATE_DIR.'/index.php';
+include_once TEMPLATE;
 
 
 ?>

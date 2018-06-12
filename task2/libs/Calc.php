@@ -27,7 +27,7 @@ class Calc
 
     public function divide()
     {
-        if ($this->b==0)
+        if ($this->b===0)
         {
             return DIVISION_BY_ZERO;
         }
@@ -39,13 +39,17 @@ class Calc
     {
         if ($this->a<0)
         {
-            return NEGATIVE_SQARE_ROOT;
+            return NEGATIVE_SQUARE_ROOT;
         }
         return sqrt($this->a);
     }
 
     public function mod()
     {
+		if ($this->b===0)
+        {
+            return DIVISION_BY_ZERO;
+        }
         return $this->a%$this->b;
     }
 
