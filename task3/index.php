@@ -21,13 +21,22 @@ for ($snum=0; $snum<count($file); $snum++)
     }
 }
 
-$fileMan->changeStringFromFile(6,"lsdjflsdf");
+$fileMan->changeStringFromFile(6,"aaaaaaaaaaaaaaaaaaa");
+$fileMan->changeCharFromFile(10,11,"?");
+$fileMan->saveFile();
 
 $fileChangedLines='';
 $fileChangedChars='';
 for ($snum=0; $snum<count($file); $snum++)
 {
     $fileChangedLines .= $fileMan->getStringFromFile($snum); 
+}
+for ($snum=0; $snum<count($file); $snum++)
+{
+    for ($cnum=0;$cnum<strlen($file[$snum]);$cnum++)
+	{
+        $fileChangedChars .= $fileMan->getCharFromFile($snum, $cnum); 
+    }
 }
 
 include TEMPLATE;

@@ -33,7 +33,7 @@ function changeCharFromFile($snum, $cnum, $char)
 
 function saveFile()
 {
-	return 0;
+    file_put_contents(FNAME_CHANGED, $this->file);
 }
 
 }

@@ -2,28 +2,28 @@
     <head><title>Task3</title></head>
     <body>
 	
-	<h2>file before change</h2>
-        <h3>file printing by line</h3>
-<p>
+	<h2>The file before change</h2>
+        <h3>File printing by line</h3>
+<p><pre>
 <?php echo $filePrintedLines; ?>
-</p>
+</pre></p>
 
-        <h3>file printing by char</h3>
-<p>
+        <h3>File printing by char</h3>
+<p><pre>
 <?php echo $filePrintedChars; ?>
-</p>
+</pre></p>
 
-<h2>file after change</h2>
+<h2>The file after change</h2>
 
-<h3>file printing by line</h3>
-<p>
+<h3>File printing by line</h3>
+<p><pre>
 <?php echo $fileChangedLines; ?>
-</p>
+</pre></p>
 
-        <h3>file printing by char</h3>
-<p>
+        <h3>File printing by char</h3>
+<p><pre>
 <?php echo $fileChangedChars; ?>
-</p>
+</pre></p>
 
     </body>
 </html>
