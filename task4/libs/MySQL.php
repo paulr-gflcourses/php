@@ -1,4 +1,3 @@
-
 <?php
 include_once "config.php";
 include_once "SQL.php";
@@ -6,15 +5,11 @@ include_once "SQL.php";
 class MySQL extends SQL
 {
     private $table;
-    private $idField;
-    private $dataField;
 
-
-    function __construct(){
+    function __construct()
+    {
         parent::__construct();
         $this->table=TABLE_MYSQL;
-        $this->idField = "user12";
-        $this->dataField = "some data...";
     }
 
     function connect()
@@ -26,42 +21,38 @@ class MySQL extends SQL
         
     }
 
-    function select()
+    function select($userid)
     {
         $link = $this->link;
-
-        $res = $link->query("SELECT userid,userdata from $this->table");
-        /*
-            foreach($res as $row) {
-                print_r($row);
-            }
-         */
-        return $res->fetch();
+        $sql = "SELECT userid, userdata FROM $this->table WHERE userid='$userid'";
+        $res = $link->query($sql);
+        $res->setFetchMode(PDO::FETCH_ASSOC);
+        return $res->fetchAll();
     }
 
-    function insert()
+    function insert($userid, $userdata)
     {
-        $sql = "INSERT INTO $this->table(userid,userdata) VALUES(?, ?)"; 
-        $link = $this->getDblink();
+        $sql = "INSERT INTO $this->table (userid, userdata) VALUES (?, ?)"; 
+        $link = $this->link;
         $statement = $link->prepare($sql);
-        $statement->execute(array("user12", "some data..."));
+        $statement->execute(array($userid, $userdata));
     }
 
-    function update()
+    function update($userid, $userdata)
     {
         $sql = "UPDATE $this->table SET userdata=? WHERE userid=?";
-        $link = $this->getDblink();
+        $link = $this->link;
         $statement = $link->prepare($sql);
-        $statement->execute(array("some new data", "user12" ));
+        $statement->execute(array($userdata, $userid));
     }
 
-    function delete()
+    function delete($userid, $userdata)
     {
 
-        $sql = "DELETE FROM $this->table userid=? AND userdata=?";
-        $link = $this->getDblink();
+        $sql = "DELETE FROM $this->table WHERE userid=? AND userdata=? LIMIT 1";
+        $link = $this->link;
         $statement = $link->prepare($sql);
-        $statement->execute(array("user12", "some data..."));
+        $statement->execute(array($userid, $userdata));
     
     }
 

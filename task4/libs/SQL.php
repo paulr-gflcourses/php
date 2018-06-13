@@ -13,19 +13,19 @@ class SQL
     {
     }
 
-    function select()
+    function select($userid)
     {
     }
 
-    function insert()
+    function insert($userid, $userdata)
     {
     }
 
-    function update()
+    function update($userid, $userdata)
     {
     }
     
-    function delete()
+    function delete($userid, $userdata)
     {
     }
 
