@@ -25,15 +25,20 @@ $fileMan->changeStringFromFile(6,"aaaaaaaaaaaaaaaaaaa");
 $fileMan->changeCharFromFile(10,11,"?");
 $fileMan->saveFile();
 
+
+$file2 = file(FNAME_CHANGED);
+$fileMan = new FileManipulator($file2);
 $fileChangedLines='';
-$fileChangedChars='';
-for ($snum=0; $snum<count($file); $snum++)
+
+for ($snum=0; $snum<count($file2); $snum++)
 {
     $fileChangedLines .= $fileMan->getStringFromFile($snum); 
 }
-for ($snum=0; $snum<count($file); $snum++)
+
+$fileChangedChars='';
+for ($snum=0; $snum<count($file2); $snum++)
 {
-    for ($cnum=0;$cnum<strlen($file[$snum]);$cnum++)
+    for ($cnum=0;$cnum<strlen($file2[$snum]);$cnum++)
 	{
         $fileChangedChars .= $fileMan->getCharFromFile($snum, $cnum); 
     }
