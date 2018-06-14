@@ -1,5 +1,4 @@
 <?php
-include_once "config.php";
 function printSelect($selectResult)
 {
     
@@ -28,7 +27,7 @@ if ($selectResult)
     <h3>MySQL queries(Table MY_TEST):</h3>
 <p>
     SELECT: 
-   <?php echo "select sql = $selectQuery"; ?>
+   <!--?php echo "select sql = $selectQuery"; ?-->
 </p>
 <p>
     Result of the select query:
@@ -38,17 +37,17 @@ if ($selectResult)
 </p>
 
 <p>
-    INSERT: <?php echo $insertQuery; ?> 
+    INSERT: <!--?php echo $insertQuery; ?--> 
     Result of the INSERT query:
     <?php printSelect($insertResult);?>
 </p>
 <p>
-    UPDATE: <?php echo $updateQuery; ?> 
+    UPDATE: <!--?php echo $updateQuery; ? --> 
     Result of the UPDATE query:
     <?php printSelect($updateResult);?>
 
 <p>
-    DELETE: <?php echo $deleteQuery; ?> 
+    DELETE: <!--?php echo $deleteQuery; ?--> 
     Result of the DELETE query:
     <?php printSelect($deleteResult);?>
 </p>

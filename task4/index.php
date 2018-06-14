@@ -5,13 +5,20 @@ include_once "libs/MySQL.php";
 include_once "libs/SQL.php";
 
 $mysql = new MySQL();
-$selectResult = $mysql->select(USERID);
-$mysql->insert(USERID, "some new data...");
-$insertResult = $mysql->select(USERID);
-$mysql->update(USERID, "data after update");
-$updateResult = $mysql->select(USERID);
-$mysql->delete(USERID, "data after update");
-$deleteResult = $mysql->select(USERID);
+$mysql->setUserId(USERID);
+
+$selectResult = $mysql->select();
+
+$mysql->setUserData("some new data...");
+$mysql->insert();
+$insertResult = $mysql->select();
+
+$mysql->setUserData("data after update");
+$mysql->update();
+$updateResult = $mysql->select();
+
+$mysql->delete();
+$deleteResult = $mysql->select();
 
 include_once TEMPLATE;
 ?>
