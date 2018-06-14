@@ -1,27 +1,32 @@
 <?php
 include_once "SQL.php";
 
-class PostgreSQL extends SQL
+class MySQL extends SQL
 {
 
     function __construct()
     {
-        parent::__construct(TABLE_POSTGRESQL);
+        parent::__construct(TABLE_MYSQL);
     }
 
     function connect()
     {
-        $dsn = "pgsql:host=".HOSTNAME.";dbname=".DBNAME;
+        $dsn = "mysql:host=".HOSTNAME.";dbname=".DBNAME;
         $link = new PDO($dsn, USERNAME, PASSWORD);
         $this->setLink($link);
     }
 
-    function select()
+    function select($fields)
     {
-        $userid = $this->getUserId();
-        $table = $this->getTable();
-        $this->setSql("SELECT userid, userdata FROM $table WHERE userid='$userid'");
-        return parent::select();
+        $fieldsExp = implode(", ",$fields);
+        $this->addSql("SELECT $fieldsExp");
+        return $this;
+    }
+
+    function from($table)
+    {
+        $this->addSql("FROM $table");
+        return $this;
     }
 
     function insert()
@@ -41,7 +46,7 @@ class PostgreSQL extends SQL
     function delete()
     {
         $table = $this->getTable();
-        $this->setSql("DELETE FROM $table WHERE ctid=(SELECT ctid FROM $table WHERE userid=? AND userdata=? LIMIT 1)");
+        $this->setSql("DELETE FROM $table WHERE userid=? AND userdata=? LIMIT 1");
         parent::delete();
     }
 
