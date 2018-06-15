@@ -18,14 +18,19 @@ class MySQL extends SQL
 
     function select($fields)
     {
-        $fieldsExp = implode(", ",$fields);
-        $this->addSql("SELECT $fieldsExp");
+        $this->addSql("SELECT $fields");
         return $this;
     }
 
     function from($table)
     {
-        $this->addSql("FROM $table");
+        $this->addSql(" FROM $table");
+        return $this;
+    }
+    
+    function where($conditions)
+    {
+        $this->addSql(" WHERE $conditions");
         return $this;
     }
 

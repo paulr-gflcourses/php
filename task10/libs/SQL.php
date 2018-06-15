@@ -26,7 +26,7 @@ class SQL
     {
     }
 
-    function where($conditions, $params)
+    function where($conditions)
     {
     }
 
@@ -63,6 +63,10 @@ class SQL
         }    
     }
 
+    function addSQL($sql)
+    {
+        $this->sql .= $sql;
+    }
     function setUserId($userid)
     {
         if ($userid && is_string($userid))
