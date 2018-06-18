@@ -1,0 +1,279 @@
+4.1
+.                                                                   1 / 1 (100%)
+
+Time: 38 ms, Memory: 4.00Mb
+
+OK (1 test, 5 assertions)
+
+
+4.2
+...                                                                 3 / 3 (100%)
+
+Time: 56 ms, Memory: 4.00Mb
+
+OK (3 tests, 5 assertions)
+
+4.3
+FS                                                                  2 / 2 (100%)
+
+Time: 35 ms, Memory: 4.00Mb
+
+There was 1 failure:
+
+1) DependencyFailureTest::testOne
+Failed asserting that false is true.
+
+/home/paul/public_html/php/task12/test.php:6
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1, Skipped: 1.
+
+Оболочка завершила работу 1
+
+
+4.4
+...                                                                 3 / 3 (100%)
+
+Time: 47 ms, Memory: 4.00Mb
+
+OK (3 tests, 3 assertions)
+
+
+4.5
+...F                                                                4 / 4 (100%)
+
+Time: 46 ms, Memory: 4.00Mb
+
+There was 1 failure:
+
+1) DataTest::testAdd with data set #3 (1, 1, 3)
+Failed asserting that 2 matches expected 3.
+
+/home/paul/public_html/php/task12/test.php:9
+
+FAILURES!
+Tests: 4, Assertions: 4, Failures: 1.
+
+
+4.6
+
+...F                                                                4 / 4 (100%)
+
+Time: 53 ms, Memory: 4.00Mb
+
+There was 1 failure:
+
+1) DataTest::testAdd with data set #3 ('1', ' 1', ' 3')
+Failed asserting that 2 matches expected ' 3'.
+
+/home/paul/public_html/php/task12/test.php:11
+
+FAILURES!
+Tests: 4, Assertions: 4, Failures: 1.
+
+
+4.8
+...F                                                                4 / 4 (100%)
+
+Time: 50 ms, Memory: 4.00Mb
+
+There was 1 failure:
+
+1) DependencyAndDataProviderComboTest::testConsumer with data set #1 ('provider2')
+Failed asserting that two arrays are equal.
+--- Expected
++++ Actual
+@@ @@
+ Array (
+-    0 => 'provider1'
++    0 => 'provider2'
+     1 => 'first'
+     2 => 'second'
+ )
+
+/home/paul/public_html/php/task12/test.php:33
+
+FAILURES!
+Tests: 4, Assertions: 4, Failures: 1.
+
+
+4.9
+
+F                                                                   1 / 1 (100%)
+
+Time: 41 ms, Memory: 4.00Mb
+
+There was 1 failure:
+
+1) ExceptionTest::testException
+Failed asserting that exception of type "InvalidArgumentException" is thrown.
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+4.10
+FF                                                                  2 / 2 (100%)
+
+Time: 26 ms, Memory: 4.00Mb
+
+There were 2 failures:
+
+1) ExceptionTest::testExceptionHasRightMessage
+Failed asserting that exception message 'Some Message' contains 'Right Message'.
+
+2) ExceptionTest::testExceptionHasRightCode
+Failed asserting that 10 is equal to expected exception code 20.
+
+FAILURES!
+Tests: 2, Assertions: 4, Failures: 2.
+
+4.11
+FFF                                                                 3 / 3 (100%)
+
+Time: 47 ms, Memory: 4.00Mb
+
+There were 3 failures:
+
+1) ExceptionTest::testException
+Failed asserting that exception of type "InvalidArgumentException" is thrown.
+
+2) ExceptionTest::testExceptionHasRightMessage
+Failed asserting that exception message 'Some Message' contains 'Right Message'.
+
+3) ExceptionTest::testExceptionHasRightCode
+Failed asserting that 10 is equal to expected exception code 20.
+
+FAILURES!
+Tests: 3, Assertions: 6, Failures: 3.
+
+
+4.12
+F                                                                   1 / 1 (100%)
+
+Time: 31 ms, Memory: 4.00Mb
+
+There was 1 failure:
+
+1) ExceptionTest::testException
+An expected exception has not been raised.
+
+/home/paul/public_html/php/task12/test.php:14
+
+FAILURES!
+Tests: 1, Assertions: 0, Failures: 1.
+
+
+4.13
+.                                                                   1 / 1 (100%)
+
+Time: 56 ms, Memory: 4.00Mb
+
+OK (1 test, 1 assertion)
+
+
+4.14
+.                                                                   1 / 1 (100%)
+
+Time: 38 ms, Memory: 4.00Mb
+
+OK (1 test, 1 assertion)
+
+
+4.15
+.F                                                                  2 / 2 (100%)
+
+Time: 31 ms, Memory: 4.00Mb
+
+There was 1 failure:
+
+1) OutputTest::testExpectBarActualBaz
+Failed asserting that two strings are equal.
+--- Expected
++++ Actual
+@@ @@
+-'bar'
++'baz'
+
+FAILURES!
+Tests: 2, Assertions: 2, Failures: 1.
+
+
+4.16
+F                                                                   1 / 1 (100%)
+
+Time: 38 ms, Memory: 4.00Mb
+
+There was 1 failure:
+
+1) ArrayHasKeyTest::testFailure
+Failed asserting that an array has the key 'foo'.
+
+/home/paul/public_html/php/task12/test.php:6
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+4.17
+F                                                                   1 / 1 (100%)
+
+Time: 39 ms, Memory: 4.00Mb
+
+There was 1 failure:
+
+1) ClassHasAttributeTest::testFailure
+Failed asserting that class "stdClass" has attribute "foo".
+
+/home/paul/public_html/php/task12/test.php:6
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+4.18
+F                                                                   1 / 1 (100%)
+
+Time: 37 ms, Memory: 4.00Mb
+
+There was 1 failure:
+
+1) ClassHasStaticAttributeTest::testFailure
+Failed asserting that class "stdClass" has static attribute "foo".
+
+/home/paul/public_html/php/task12/test.php:6
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+4.19
+F                                                                   1 / 1 (100%)
+
+Time: 35 ms, Memory: 4.00Mb
+
+There was 1 failure:
+
+1) ContainsTest::testFailure
+Failed asserting that an array contains 4.
+
+/home/paul/public_html/php/task12/test.php:6
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+4.20
+F                                                                   1 / 1 (100%)
+
+Time: 32 ms, Memory: 4.00Mb
+
+There was 1 failure:
+
+1) ContainsTest::testFailure
+Failed asserting that 'foobar' contains "baz".
+
+/home/paul/public_html/php/task12/test.php:6
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1
+

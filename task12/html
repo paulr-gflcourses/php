@@ -1,0 +1,3361 @@
+
+
+    This documentation is outdated. Please follow this link to learn about the new documentation.
+
+1. Automating Tests
+2. PHPUnit's Goals
+3. Installing PHPUnit
+
+    Requirements
+    PHP Archive (PHAR)
+
+        Verifying PHPUnit PHAR Releases
+
+    Composer
+    Optional packages
+    Upgrading
+
+4. Writing Tests for PHPUnit
+
+    Test Dependencies
+    Data Providers
+    Testing Exceptions
+    Testing PHP Errors
+    Testing Output
+    Assertions
+
+        assertArrayHasKey()
+        assertClassHasAttribute()
+        assertClassHasStaticAttribute()
+        assertContains()
+        assertContainsOnly()
+        assertContainsOnlyInstancesOf()
+        assertCount()
+        assertEmpty()
+        assertEqualXMLStructure()
+        assertEquals()
+        assertFalse()
+        assertFileEquals()
+        assertFileExists()
+        assertGreaterThan()
+        assertGreaterThanOrEqual()
+        assertInstanceOf()
+        assertInternalType()
+        assertJsonFileEqualsJsonFile()
+        assertJsonStringEqualsJsonFile()
+        assertJsonStringEqualsJsonString()
+        assertLessThan()
+        assertLessThanOrEqual()
+        assertNull()
+        assertObjectHasAttribute()
+        assertRegExp()
+        assertStringMatchesFormat()
+        assertStringMatchesFormatFile()
+        assertSame()
+        assertSelectCount()
+        assertSelectEquals()
+        assertSelectRegExp()
+        assertStringEndsWith()
+        assertStringEqualsFile()
+        assertStringStartsWith()
+        assertTag()
+        assertThat()
+        assertTrue()
+        assertXmlFileEqualsXmlFile()
+        assertXmlStringEqualsXmlFile()
+        assertXmlStringEqualsXmlString()
+
+    Error output
+
+        Edge cases
+
+5. The Command-Line Test Runner
+
+    Command-Line Options
+
+6. Fixtures
+
+    More setUp() than tearDown()
+    Variations
+    Sharing Fixture
+    Global State
+
+7. Organizing Tests
+
+    Composing a Test Suite Using the Filesystem
+    Composing a Test Suite Using XML Configuration
+
+8. Database Testing
+
+    Supported Vendors for Database Testing
+    Difficulties in Database Testing
+    The four stages of a database test
+
+        1. Clean-Up Database
+        2. Set up fixture
+        3–5. Run Test, Verify outcome and Teardown
+
+    Configuration of a PHPUnit Database TestCase
+
+        Implementing getConnection()
+        Implementing getDataSet()
+        What about the Database Schema (DDL)?
+        Tip: Use your own Abstract Database TestCase
+
+    Understanding DataSets and DataTables
+
+        Available Implementations
+        Beware of Foreign Keys
+        Implementing your own DataSets/DataTables
+
+    The Connection API
+    Database Assertions API
+
+        Asserting the Row-Count of a Table
+        Asserting the State of a Table
+        Asserting the Result of a Query
+        Asserting the State of Multiple Tables
+
+    Frequently Asked Questions
+
+        Will PHPUnit (re-)create the database schema for each test?
+        Am I required to use PDO in my application for the Database Extension to work?
+        What can I do, when I get a “Too much Connections” Error?
+        How to handle NULL with Flat XML / CSV Datasets?
+
+9. Incomplete and Skipped Tests
+
+    Incomplete Tests
+    Skipping Tests
+    Skipping Tests using @requires
+
+10. Test Doubles
+
+    Stubs
+    Mock Objects
+    Stubbing and Mocking Web Services
+    Mocking the Filesystem
+
+11. Testing Practices
+
+    During Development
+    During Debugging
+
+12. Test-Driven Development
+
+    BankAccount Example
+
+13. Behaviour-Driven Development
+
+    BowlingGame Example
+
+14. Code Coverage Analysis
+
+    Specifying Covered Methods
+    Ignoring Code Blocks
+    Including and Excluding Files
+    Edge cases
+
+15. Other Uses for Tests
+
+    Agile Documentation
+    Cross-Team Tests
+
+16. Skeleton Generator
+
+    Generating a Test Case Class Skeleton
+    Generating a Class Skeleton from a Test Case Class
+
+17. PHPUnit and Selenium
+
+    Selenium Server
+    Installation
+    PHPUnit_Extensions_Selenium2TestCase
+    PHPUnit_Extensions_SeleniumTestCase
+
+18. Logging
+
+    Test Results (XML)
+    Test Results (TAP)
+    Test Results (JSON)
+    Code Coverage (XML)
+    Code Coverage (TEXT)
+
+19. Extending PHPUnit
+
+    Subclass PHPUnit_Framework_TestCase
+    Write custom assertions
+    Implement PHPUnit_Framework_TestListener
+    Subclass PHPUnit_Extensions_TestDecorator
+    Implement PHPUnit_Framework_Test
+
+A. Assertions
+B. Annotations
+
+    @author
+    @backupGlobals
+    @backupStaticAttributes
+    @codeCoverageIgnore*
+    @covers
+    @coversDefaultClass
+    @coversNothing
+    @dataProvider
+    @depends
+    @expectedException
+    @expectedExceptionCode
+    @expectedExceptionMessage
+    @group
+    @large
+    @medium
+    @preserveGlobalState
+    @requires
+    @runTestsInSeparateProcesses
+    @runInSeparateProcess
+    @small
+    @test
+    @testdox
+    @ticket
+
+C. The XML Configuration File
+
+    PHPUnit
+    Test Suites
+    Groups
+    Including and Excluding Files for Code Coverage
+    Logging
+    Test Listeners
+    Setting PHP INI settings, Constants and Global Variables
+    Configuring Browsers for Selenium RC
+
+D. Index
+
+E. Bibliography
+F. Copyright
+
+Prev
+Next
+Chapter 4. Writing Tests for PHPUnit
+
+Example 4.1 shows how we can write tests using PHPUnit that exercise PHP's array operations. The example introduces the basic conventions and steps for writing tests with PHPUnit:
+
+    The tests for a class Class go into a class ClassTest.
+
+    ClassTest inherits (most of the time) from PHPUnit_Framework_TestCase.
+
+    The tests are public methods that are named test*.
+
+    Alternatively, you can use the @test annotation in a method's docblock to mark it as a test method.
+
+    Inside the test methods, assertion methods such as assertEquals() (see the section called “Assertions”) are used to assert that an actual value matches an expected value.
+
+Example 4.1: Testing array operations with PHPUnit
+
+<?php
+class StackTest extends PHPUnit_Framework_TestCase
+{
+    public function testPushAndPop()
+    {
+        $stack = array();
+        $this->assertEquals(0, count($stack));
+
+        array_push($stack, 'foo');
+        $this->assertEquals('foo', $stack[count($stack)-1]);
+        $this->assertEquals(1, count($stack));
+
+        $this->assertEquals('foo', array_pop($stack));
+        $this->assertEquals(0, count($stack));
+    }
+}
+?>
+
+
+
+ 	
+
+Whenever you are tempted to type something into a print statement or a debugger expression, write it as a test instead.
+	 
+ 	--Martin Fowler
+Test Dependencies
+ 	
+
+Unit Tests are primarily written as a good practice to help developers identify and fix bugs, to refactor code and to serve as documentation for a unit of software under test. To achieve these benefits, unit tests ideally should cover all the possible paths in a program. One unit test usually covers one specific path in one function or method. However a test method is not necessarily an encapsulated, independent entity. Often there are implicit dependencies between test methods, hidden in the implementation scenario of a test.
+	 
+ 	--Adrian Kuhn et. al.
+
+PHPUnit supports the declaration of explicit dependencies between test methods. Such dependencies do not define the order in which the test methods are to be executed but they allow the returning of an instance of the test fixture by a producer and passing it to the dependent consumers.
+
+    A producer is a test method that yields its unit under test as return value.
+
+    A consumer is a test method that depends on one or more producers and their return values.
+
+Example 4.2 shows how to use the @depends annotation to express dependencies between test methods.
+
+Example 4.2: Using the @depends annotation to express dependencies
+
+<?php
+class StackTest extends PHPUnit_Framework_TestCase
+{
+    public function testEmpty()
+    {
+        $stack = array();
+        $this->assertEmpty($stack);
+
+        return $stack;
+    }
+
+    /**
+     * @depends testEmpty
+     */
+    public function testPush(array $stack)
+    {
+        array_push($stack, 'foo');
+        $this->assertEquals('foo', $stack[count($stack)-1]);
+        $this->assertNotEmpty($stack);
+
+        return $stack;
+    }
+
+    /**
+     * @depends testPush
+     */
+    public function testPop(array $stack)
+    {
+        $this->assertEquals('foo', array_pop($stack));
+        $this->assertEmpty($stack);
+    }
+}
+?>
+
+
+
+In the example above, the first test, testEmpty(), creates a new array and asserts that it is empty. The test then returns the fixture as its result. The second test, testPush(), depends on testEmpty() and is passed the result of that depended-upon test as its argument. Finally, testPop() depends upon testPush().
+
+To quickly localize defects, we want our attention to be focussed on relevant failing tests. This is why PHPUnit skips the execution of a test when a depended-upon test has failed. This improves defect localization by exploiting the dependencies between tests as shown in Example 4.3.
+
+Example 4.3: Exploiting the dependencies between tests
+
+<?php
+class DependencyFailureTest extends PHPUnit_Framework_TestCase
+{
+    public function testOne()
+    {
+        $this->assertTrue(FALSE);
+    }
+
+    /**
+     * @depends testOne
+     */
+    public function testTwo()
+    {
+    }
+}
+?>
+
+phpunit --verbose DependencyFailureTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+FS
+
+Time: 0 seconds, Memory: 5.00Mb
+
+There was 1 failure:
+
+1) DependencyFailureTest::testOne
+Failed asserting that false is true.
+
+/home/sb/DependencyFailureTest.php:6
+
+There was 1 skipped test:
+
+1) DependencyFailureTest::testTwo
+This test depends on "DependencyFailureTest::testOne" to pass.
+
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1, Skipped: 1.
+
+
+
+A test may have more than one @depends annotation. PHPUnit does not change the order in which tests are executed, you have to ensure that the dependencies of a test can actually be met before the test is run.
+
+A test that has more than one @depends annotation will get a fixture from the first producer as the first argument, a fixture from the second producer as the second argument, and so on. See Example 4.4
+
+Example 4.4: Test with multiple dependencies
+
+<?php
+class MultipleDependenciesTest extends PHPUnit_Framework_TestCase
+{
+    public function testProducerFirst()
+    {
+        $this->assertTrue(true);
+        return 'first';
+    }
+
+    public function testProducerSecond()
+    {
+        $this->assertTrue(true);
+        return 'second';
+    }
+
+    /**
+     * @depends testProducerFirst
+     * @depends testProducerSecond
+     */
+    public function testConsumer()
+    {
+        $this->assertEquals(
+            array('first', 'second'),
+            func_get_args()
+        );
+    }
+}
+?>
+
+phpunit --verbose MultipleDependenciesTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+...
+
+Time: 0 seconds, Memory: 3.25Mb
+
+OK (3 tests, 3 assertions)
+
+
+
+Data Providers
+
+A test method can accept arbitrary arguments. These arguments are to be provided by a data provider method (provider() in Example 4.5). The data provider method to be used is specified using the @dataProvider annotation.
+
+A data provider method must be public and either return an array of arrays or an object that implements the Iterator interface and yields an array for each iteration step. For each array that is part of the collection the test method will be called with the contents of the array as its arguments.
+
+Example 4.5: Using a data provider that returns an array of arrays
+
+<?php
+class DataTest extends PHPUnit_Framework_TestCase
+{
+    /**
+     * @dataProvider provider
+     */
+    public function testAdd($a, $b, $c)
+    {
+        $this->assertEquals($c, $a + $b);
+    }
+
+    public function provider()
+    {
+        return array(
+          array(0, 0, 0),
+          array(0, 1, 1),
+          array(1, 0, 1),
+          array(1, 1, 3)
+        );
+    }
+}
+?>
+
+phpunit DataTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+...F
+
+Time: 0 seconds, Memory: 5.75Mb
+
+There was 1 failure:
+
+1) DataTest::testAdd with data set #3 (1, 1, 3)
+Failed asserting that 2 matches expected 3.
+
+/home/sb/DataTest.php:9
+
+FAILURES!
+Tests: 4, Assertions: 4, Failures: 1.
+
+
+
+Example 4.6: Using a data provider that returns an Iterator object
+
+<?php
+require 'CsvFileIterator.php';
+
+class DataTest extends PHPUnit_Framework_TestCase
+{
+    /**
+     * @dataProvider provider
+     */
+    public function testAdd($a, $b, $c)
+    {
+        $this->assertEquals($c, $a + $b);
+    }
+
+    public function provider()
+    {
+        return new CsvFileIterator('data.csv');
+    }
+}
+?>
+
+phpunit DataTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+...F
+
+Time: 0 seconds, Memory: 5.75Mb
+
+There was 1 failure:
+
+1) DataTest::testAdd with data set #3 ('1', '1', '3')
+Failed asserting that 2 matches expected '3'.
+
+/home/sb/DataTest.php:11
+
+FAILURES!
+Tests: 4, Assertions: 4, Failures: 1.
+
+
+
+Example 4.7: The CsvFileIterator class
+
+<?php
+class CsvFileIterator implements Iterator {
+    protected $file;
+    protected $key = 0;
+    protected $current;
+
+    public function __construct($file) {
+        $this->file = fopen($file, 'r');
+    }
+
+    public function __destruct() {
+        fclose($this->file);
+    }
+
+    public function rewind() {
+        rewind($this->file);
+        $this->current = fgetcsv($this->file);
+        $this->key = 0;
+    }
+
+    public function valid() {
+        return !feof($this->file);
+    }
+
+    public function key() {
+        return $this->key;
+    }
+
+    public function current() {
+        return $this->current;
+    }
+
+    public function next() {
+        $this->current = fgetcsv($this->file);
+        $this->key++;
+    }
+}
+?>
+
+
+
+When a test receives input from both a @dataProvider method and from one or more tests it @depends on, the arguments from the data provider will come before the ones from depended-upon tests. The arguments from depended-upon tests will be the same for each data set. See Example 4.8
+
+Example 4.8: Combination of @depends and @dataProvider in same test
+
+<?php
+class DependencyAndDataProviderComboTest extends PHPUnit_Framework_TestCase
+{
+    public function provider()
+    {
+        return array(array('provider1'), array('provider2'));
+    }
+
+    public function testProducerFirst()
+    {
+        $this->assertTrue(true);
+        return 'first';
+    }
+
+    public function testProducerSecond()
+    {
+        $this->assertTrue(true);
+        return 'second';
+    }
+
+    /**
+     * @depends testProducerFirst
+     * @depends testProducerSecond
+     * @dataProvider provider
+     */
+    public function testConsumer()
+    {
+        $this->assertEquals(
+            array('provider1', 'first', 'second'),
+            func_get_args()
+        );
+    }
+}
+?>
+
+phpunit --verbose DependencyAndDataProviderComboTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+...F
+
+Time: 0 seconds, Memory: 3.50Mb
+
+There was 1 failure:
+
+1) DependencyAndDataProviderComboTest::testConsumer with data set #1 ('provider2')
+Failed asserting that two arrays are equal.
+--- Expected
++++ Actual
+@@ @@
+Array (
+-    0 => 'provider1'
++    0 => 'provider2'
+1 => 'first'
+2 => 'second'
+)
+
+/home/sb/DependencyAndDataProviderComboTest.php:31
+
+FAILURES!
+Tests: 4, Assertions: 4, Failures: 1.
+
+
+
+Note
+
+When a test depends on a test that uses data providers, the depending test will be executed when the test it depends upon is successful for at least one data set. The result of a test that uses data providers cannot be injected into a depending test.
+Note
+
+All data providers are executed before both the call to the setUpBeforeClass static method and the first call to the setUp method. Because of that you can't access any variables you create there from within a data provider. This is required in order for PHPUnit to be able to compute the total number of tests.
+Testing Exceptions
+
+Example 4.9 shows how to use the @expectedException annotation to test whether an exception is thrown inside the tested code.
+
+Example 4.9: Using the @expectedException annotation
+
+<?php
+class ExceptionTest extends PHPUnit_Framework_TestCase
+{
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testException()
+    {
+    }
+}
+?>
+
+phpunit ExceptionTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 4.75Mb
+
+There was 1 failure:
+
+1) ExceptionTest::testException
+Expected exception InvalidArgumentException
+
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+
+Additionally, you can use @expectedExceptionMessage and @expectedExceptionCode in combination with @expectedException to test the exception message and exception code as shown in Example 4.10.
+
+Example 4.10: Using the @expectedExceptionMessage and @expectedExceptionCode annotations
+
+<?php
+class ExceptionTest extends PHPUnit_Framework_TestCase
+{
+    /**
+     * @expectedException        InvalidArgumentException
+     * @expectedExceptionMessage Right Message
+     */
+    public function testExceptionHasRightMessage()
+    {
+        throw new InvalidArgumentException('Some Message', 10);
+    }
+
+    /**
+     * @expectedException     InvalidArgumentException
+     * @expectedExceptionCode 20
+     */
+    public function testExceptionHasRightCode()
+    {
+        throw new InvalidArgumentException('Some Message', 10);
+    }
+}
+?>
+
+phpunit ExceptionTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+FF
+
+Time: 0 seconds, Memory: 3.00Mb
+
+There were 2 failures:
+
+1) ExceptionTest::testExceptionHasRightMessage
+Failed asserting that exception message 'Some Message' contains 'Right Message'.
+
+
+2) ExceptionTest::testExceptionHasRightCode
+Failed asserting that expected exception code 20 is equal to 10.
+
+
+FAILURES!
+Tests: 2, Assertions: 4, Failures: 2.
+
+
+
+More examples of @expectedExceptionMessage and @expectedExceptionCode are shown in the section called “@expectedExceptionMessage” and the section called “@expectedExceptionCode” respectively.
+
+Alternatively, you can use the setExpectedException() method to set the expected exception as shown in Example 4.11.
+
+Example 4.11: Expecting an exception to be raised by the tested code
+
+<?php
+class ExceptionTest extends PHPUnit_Framework_TestCase
+{
+    public function testException()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+    }
+
+    public function testExceptionHasRightMessage()
+    {
+        $this->setExpectedException(
+          'InvalidArgumentException', 'Right Message'
+        );
+        throw new InvalidArgumentException('Some Message', 10);
+    }
+
+    public function testExceptionHasRightCode()
+    {
+        $this->setExpectedException(
+          'InvalidArgumentException', 'Right Message', 20
+        );
+        throw new InvalidArgumentException('The Right Message', 10);
+    }
+}?>
+
+phpunit ExceptionTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+FFF
+
+Time: 0 seconds, Memory: 3.00Mb
+
+There were 3 failures:
+
+1) ExceptionTest::testException
+Expected exception InvalidArgumentException
+
+
+2) ExceptionTest::testExceptionHasRightMessage
+Failed asserting that exception message 'Some Message' contains 'Right Message'.
+
+
+3) ExceptionTest::testExceptionHasRightCode
+Failed asserting that expected exception code 20 is equal to 10.
+
+
+FAILURES!
+Tests: 3, Assertions: 6, Failures: 3.
+
+
+
+Table 4.1 shows the methods provided for testing exceptions.
+
+Table 4.1. Methods for testing exceptions
+Method	Meaning
+void setExpectedException(string $exceptionName[, string $exceptionMessage = '', integer $exceptionCode = NULL])	Set the expected $exceptionName, $exceptionMessage, and $exceptionCode.
+String getExpectedException()	Return the name of the expected exception.
+
+
+You can also use the approach shown in Example 4.12 to test exceptions.
+
+Example 4.12: Alternative approach to testing exceptions
+
+<?php
+class ExceptionTest extends PHPUnit_Framework_TestCase {
+    public function testException() {
+        try {
+            // ... Code that is expected to raise an exception ...
+        }
+
+        catch (InvalidArgumentException $expected) {
+            return;
+        }
+
+        $this->fail('An expected exception has not been raised.');
+    }
+}
+?>
+
+
+
+If the code that is expected to raise an exception in Example 4.12 does not raise the expected exception, the subsequent call to fail() will halt the test and signal a problem with the test. If the expected exception is raised, the catch block will be executed, and the test will end successfully.
+Testing PHP Errors
+
+By default, PHPUnit converts PHP errors, warnings, and notices that are triggered during the execution of a test to an exception. Using these exceptions, you can, for instance, expect a test to trigger a PHP error as shown in Example 4.13.
+Note
+
+PHP's error_reporting runtime configuration can limit which errors PHPUnit will convert to exceptions. If you are having issues with this feature, be sure PHP is not configured to suppress the type of errors you're testing.
+
+Example 4.13: Expecting a PHP error using @expectedException
+
+<?php
+class ExpectedErrorTest extends PHPUnit_Framework_TestCase
+{
+    /**
+     * @expectedException PHPUnit_Framework_Error
+     */
+    public function testFailingInclude()
+    {
+        include 'not_existing_file.php';
+    }
+}
+?>
+
+phpunit -d error_reporting=2 ExpectedErrorTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+.
+
+Time: 0 seconds, Memory: 5.25Mb
+
+OK (1 test, 1 assertion)
+
+
+
+PHPUnit_Framework_Error_Notice and PHPUnit_Framework_Error_Warning represent PHP notices and warnings, respectively.
+Note
+
+You should be as specific as possible when testing exceptions. Testing for classes that are too generic might lead to undesirable side-effects. Accordingly, testing for the Exception class with @expectedException or setExpectedException() is no longer permitted.
+
+When testing that relies on php functions that trigger errors like fopen it can sometimes be useful to use error suppression while testing. This allows you to check the return values by suppressing notices that would lead to a phpunit PHPUnit_Framework_Error_Notice.
+
+Example 4.14: Testing return values of code that uses PHP Errors
+
+<?php
+class ErrorSuppressionTest extends PHPUnit_Framework_TestCase
+{
+    public function testFileWriting() {
+        $writer = new FileWriter;
+        $this->assertFalse(@$writer->write('/is-not-writeable/file', 'stuff'));
+    }
+}
+class FileWriter
+{
+    public function write($file, $content) {
+        $file = fopen($file, 'w');
+        if($file == false) {
+            return false;
+        }
+        // ...
+    }
+}
+
+?>
+
+phpunit ErrorSuppressionTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+.
+
+Time: 1 seconds, Memory: 5.25Mb
+
+OK (1 test, 1 assertion)
+
+
+
+Without the error suppression the test would fail reporting fopen(/is-not-writeable/file): failed to open stream: No such file or directory.
+Testing Output
+
+Sometimes you want to assert that the execution of a method, for instance, generates an expected output (via echo or print, for example). The PHPUnit_Framework_TestCase class uses PHP's Output Buffering feature to provide the functionality that is necessary for this.
+
+Example 4.15 shows how to use the expectOutputString() method to set the expected output. If this expected output is not generated, the test will be counted as a failure.
+
+Example 4.15: Testing the output of a function or method
+
+<?php
+class OutputTest extends PHPUnit_Framework_TestCase
+{
+    public function testExpectFooActualFoo()
+    {
+        $this->expectOutputString('foo');
+        print 'foo';
+    }
+
+    public function testExpectBarActualBaz()
+    {
+        $this->expectOutputString('bar');
+        print 'baz';
+    }
+}
+?>
+
+phpunit OutputTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+.F
+
+Time: 0 seconds, Memory: 5.75Mb
+
+There was 1 failure:
+
+1) OutputTest::testExpectBarActualBaz
+Failed asserting that two strings are equal.
+--- Expected
++++ Actual
+@@ @@
+-'bar'
++'baz'
+
+
+FAILURES!
+Tests: 2, Assertions: 2, Failures: 1.
+
+
+
+Table 4.2 shows the methods provided for testing output
+
+Table 4.2. Methods for testing output
+Method	Meaning
+void expectOutputRegex(string $regularExpression)	Set up the expectation that the output matches a $regularExpression.
+void expectOutputString(string $expectedString)	Set up the expectation that the output is equal to an $expectedString.
+bool setOutputCallback(callable $callback)	Sets up a callback that is used to, for instance, normalize the actual output.
+
+
+Note
+
+A test that emits output will fail in strict mode.
+Assertions
+
+This section lists the various assertion methods that are available.
+assertArrayHasKey()
+
+assertArrayHasKey(mixed $key, array $array[, string $message = ''])
+
+Reports an error identified by $message if $array does not have the $key.
+
+assertArrayNotHasKey() is the inverse of this assertion and takes the same arguments.
+
+Example 4.16: Usage of assertArrayHasKey()
+
+<?php
+class ArrayHasKeyTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertArrayHasKey('foo', array('bar' => 'baz'));
+    }
+}
+?>
+
+phpunit ArrayHasKeyTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 5.00Mb
+
+There was 1 failure:
+
+1) ArrayHasKeyTest::testFailure
+Failed asserting that an array has the key 'foo'.
+
+/home/sb/ArrayHasKeyTest.php:6
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+
+assertClassHasAttribute()
+
+assertClassHasAttribute(string $attributeName, string $className[, string $message = ''])
+
+Reports an error identified by $message if $className::attributeName does not exist.
+
+assertClassNotHasAttribute() is the inverse of this assertion and takes the same arguments.
+
+Example 4.17: Usage of assertClassHasAttribute()
+
+<?php
+class ClassHasAttributeTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertClassHasAttribute('foo', 'stdClass');
+    }
+}
+?>
+
+phpunit ClassHasAttributeTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 4.75Mb
+
+There was 1 failure:
+
+1) ClassHasAttributeTest::testFailure
+Failed asserting that class "stdClass" has attribute "foo".
+
+/home/sb/ClassHasAttributeTest.php:6
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+
+assertClassHasStaticAttribute()
+
+assertClassHasStaticAttribute(string $attributeName, string $className[, string $message = ''])
+
+Reports an error identified by $message if $className::attributeName does not exist.
+
+assertClassNotHasStaticAttribute() is the inverse of this assertion and takes the same arguments.
+
+Example 4.18: Usage of assertClassHasStaticAttribute()
+
+<?php
+class ClassHasStaticAttributeTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertClassHasStaticAttribute('foo', 'stdClass');
+    }
+}
+?>
+
+phpunit ClassHasStaticAttributeTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 4.75Mb
+
+There was 1 failure:
+
+1) ClassHasStaticAttributeTest::testFailure
+Failed asserting that class "stdClass" has static attribute "foo".
+
+/home/sb/ClassHasStaticAttributeTest.php:6
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+
+assertContains()
+
+assertContains(mixed $needle, Iterator|array $haystack[, string $message = ''])
+
+Reports an error identified by $message if $needle is not an element of $haystack.
+
+assertNotContains() is the inverse of this assertion and takes the same arguments.
+
+assertAttributeContains() and assertAttributeNotContains() are convenience wrappers that use a public, protected, or private attribute of a class or object as the haystack.
+
+Example 4.19: Usage of assertContains()
+
+<?php
+class ContainsTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertContains(4, array(1, 2, 3));
+    }
+}
+?>
+
+phpunit ContainsTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 5.00Mb
+
+There was 1 failure:
+
+1) ContainsTest::testFailure
+Failed asserting that an array contains 4.
+
+/home/sb/ContainsTest.php:6
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+
+assertContains(string $needle, string $haystack[, string $message = '', boolean $ignoreCase = FALSE])
+
+Reports an error identified by $message if $needle is not a substring of $haystack.
+
+If $ignoreCase is TRUE, the test will be case insensitive.
+
+Example 4.20: Usage of assertContains()
+
+<?php
+class ContainsTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertContains('baz', 'foobar');
+    }
+}
+?>
+
+phpunit ContainsTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 5.00Mb
+
+There was 1 failure:
+
+1) ContainsTest::testFailure
+Failed asserting that 'foobar' contains "baz".
+
+/home/sb/ContainsTest.php:6
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+
+Example 4.21: Usage of assertContains() with $ignoreCase
+
+<?php
+class ContainsTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertContains('foo', 'FooBar');
+    }
+
+    public function testOK()
+    {
+        $this->assertContains('foo', 'FooBar', '', true);
+    }
+}
+?>
+
+phpunit ContainsTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F.
+
+Time: 0 seconds, Memory: 2.75Mb
+
+There was 1 failure:
+
+1) ContainsTest::testFailure
+Failed asserting that 'FooBar' contains "foo".
+
+/home/sb/ContainsTest.php:6
+
+FAILURES!
+Tests: 2, Assertions: 2, Failures: 1.
+
+
+
+assertContainsOnly()
+
+assertContainsOnly(string $type, Iterator|array $haystack[, boolean $isNativeType = NULL, string $message = ''])
+
+Reports an error identified by $message if $haystack does not contain only variables of type $type.
+
+$isNativeType is a flag used to indicate whether $type is a native PHP type or not.
+
+assertNotContainsOnly() is the inverse of this assertion and takes the same arguments.
+
+assertAttributeContainsOnly() and assertAttributeNotContainsOnly() are convenience wrappers that use a public, protected, or private attribute of a class or object as the haystack.
+
+Example 4.22: Usage of assertContainsOnly()
+
+<?php
+class ContainsOnlyTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertContainsOnly('string', array('1', '2', 3));
+    }
+}
+?>
+
+phpunit ContainsOnlyTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 5.00Mb
+
+There was 1 failure:
+
+1) ContainsOnlyTest::testFailure
+Failed asserting that Array (
+    0 => '1'
+    1 => '2'
+    2 => 3
+) contains only values of type "string".
+
+/home/sb/ContainsOnlyTest.php:6
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+
+assertContainsOnlyInstancesOf()
+
+assertContainsOnlyInstancesOf(string $classname, Traversable|array $haystack[, string $message = ''])
+
+Reports an error identified by $message if $haystack does not contain only instances of class $classname.
+
+Example 4.23: Usage of assertContainsOnlyInstancesOf()
+
+<?php
+class ContainsOnlyInstancesOfTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertContainsOnlyInstancesOf('Foo', array(new Foo(), new Bar(), new Foo()));
+    }
+}
+?>
+
+phpunit ContainsOnlyInstancesOfTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 5.00Mb
+
+There was 1 failure:
+
+1) ContainsOnlyInstancesOfTest::testFailure
+Failed asserting that Array ([0]=> Bar Object(...)) is an instance of class "Foo".
+
+/home/sb/ContainsOnlyInstancesOfTest.php:6
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+
+assertCount()
+
+assertCount($expectedCount, $haystack[, string $message = ''])
+
+Reports an error identified by $message if the number of elements in $haystack is not $expectedCount.
+
+assertNotCount() is the inverse of this assertion and takes the same arguments.
+
+Example 4.24: Usage of assertCount()
+
+<?php
+class CountTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertCount(0, array('foo'));
+    }
+}
+?>
+
+phpunit CountTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 4.75Mb
+
+There was 1 failure:
+
+1) CountTest::testFailure
+Failed asserting that actual size 1 matches expected size 0.
+
+/home/sb/CountTest.php:6
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+
+assertEmpty()
+
+assertEmpty(mixed $actual[, string $message = ''])
+
+Reports an error identified by $message if $actual is not empty.
+
+assertNotEmpty() is the inverse of this assertion and takes the same arguments.
+
+assertAttributeEmpty() and assertAttributeNotEmpty() are convenience wrappers that can be applied to a public, protected, or private attribute of a class or object.
+
+Example 4.25: Usage of assertEmpty()
+
+<?php
+class EmptyTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertEmpty(array('foo'));
+    }
+}
+?>
+
+phpunit EmptyTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 4.75Mb
+
+There was 1 failure:
+
+1) EmptyTest::testFailure
+Failed asserting that an array is empty.
+
+/home/sb/EmptyTest.php:6
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+
+assertEqualXMLStructure()
+
+assertEqualXMLStructure(DOMElement $expectedElement, DOMElement $actualElement[, boolean $checkAttributes = FALSE, string $message = ''])
+
+Reports an error identified by $message if the XML Structure of the DOMElement in $actualElement is not equal to the XML structure of the DOMElement in $expectedElement.
+
+Example 4.26: Usage of assertEqualXMLStructure()
+
+<?php
+class EqualXMLStructureTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailureWithDifferentNodeNames()
+    {
+        $expected = new DOMElement('foo');
+        $actual = new DOMElement('bar');
+
+        $this->assertEqualXMLStructure($expected, $actual);
+    }
+
+    public function testFailureWithDifferentNodeAttributes()
+    {
+        $expected = new DOMDocument;
+        $expected->loadXML('<foo bar="true" />');
+
+        $actual = new DOMDocument;
+        $actual->loadXML('<foo/>');
+
+        $this->assertEqualXMLStructure(
+          $expected->firstChild, $actual->firstChild, TRUE
+        );
+    }
+
+    public function testFailureWithDifferentChildrenCount()
+    {
+        $expected = new DOMDocument;
+        $expected->loadXML('<foo><bar/><bar/><bar/></foo>');
+
+        $actual = new DOMDocument;
+        $actual->loadXML('<foo><bar/></foo>');
+
+        $this->assertEqualXMLStructure(
+          $expected->firstChild, $actual->firstChild
+        );
+    }
+
+    public function testFailureWithDifferentChildren()
+    {
+        $expected = new DOMDocument;
+        $expected->loadXML('<foo><bar/><bar/><bar/></foo>');
+
+        $actual = new DOMDocument;
+        $actual->loadXML('<foo><baz/><baz/><baz/></foo>');
+
+        $this->assertEqualXMLStructure(
+          $expected->firstChild, $actual->firstChild
+        );
+    }
+}
+?>
+
+phpunit EqualXMLStructureTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+FFFF
+
+Time: 0 seconds, Memory: 5.75Mb
+
+There were 4 failures:
+
+1) EqualXMLStructureTest::testFailureWithDifferentNodeNames
+Failed asserting that two strings are equal.
+--- Expected
++++ Actual
+@@ @@
+-'foo'
++'bar'
+
+/home/sb/EqualXMLStructureTest.php:9
+
+2) EqualXMLStructureTest::testFailureWithDifferentNodeAttributes
+Number of attributes on node "foo" does not match
+Failed asserting that 0 matches expected 1.
+
+/home/sb/EqualXMLStructureTest.php:22
+
+3) EqualXMLStructureTest::testFailureWithDifferentChildrenCount
+Number of child nodes of "foo" differs
+Failed asserting that 1 matches expected 3.
+
+/home/sb/EqualXMLStructureTest.php:35
+
+4) EqualXMLStructureTest::testFailureWithDifferentChildren
+Failed asserting that two strings are equal.
+--- Expected
++++ Actual
+@@ @@
+-'bar'
++'baz'
+
+/home/sb/EqualXMLStructureTest.php:48
+
+FAILURES!
+Tests: 4, Assertions: 8, Failures: 4.
+
+
+
+assertEquals()
+
+assertEquals(mixed $expected, mixed $actual[, string $message = ''])
+
+Reports an error identified by $message if the two variables $expected and $actual are not equal.
+
+assertNotEquals() is the inverse of this assertion and takes the same arguments.
+
+assertAttributeEquals() and assertAttributeNotEquals() are convenience wrappers that use a public, protected, or private attribute of a class or object as the actual value.
+
+Example 4.27: Usage of assertEquals()
+
+<?php
+class EqualsTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertEquals(1, 0);
+    }
+
+    public function testFailure2()
+    {
+        $this->assertEquals('bar', 'baz');
+    }
+
+    public function testFailure3()
+    {
+        $this->assertEquals("foo\nbar\nbaz\n", "foo\nbah\nbaz\n");
+    }
+}
+?>
+
+phpunit EqualsTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+FFF
+
+Time: 0 seconds, Memory: 5.25Mb
+
+There were 3 failures:
+
+1) EqualsTest::testFailure
+Failed asserting that 0 matches expected 1.
+
+/home/sb/EqualsTest.php:6
+
+2) EqualsTest::testFailure2
+Failed asserting that two strings are equal.
+--- Expected
++++ Actual
+@@ @@
+-'bar'
++'baz'
+
+/home/sb/EqualsTest.php:11
+
+3) EqualsTest::testFailure3
+Failed asserting that two strings are equal.
+--- Expected
++++ Actual
+@@ @@
+ 'foo
+-bar
++bah
+ baz
+ '
+
+/home/sb/EqualsTest.php:16
+
+FAILURES!
+Tests: 3, Assertions: 3, Failures: 3.
+
+
+
+More specialized comparisons are used for specific argument types for $expected and $actual, see below.
+
+assertEquals(float $expected, float $actual[, string $message = '', float $delta = 0])
+
+Reports an error identified by $message if the two floats $expected and $actual are not within $delta of each other.
+
+Please read "What Every Computer Scientist Should Know About Floating-Point Arithmetic" to understand why $delta is neccessary.
+
+Example 4.28: Usage of assertEquals() with floats
+
+<?php
+class EqualsTest extends PHPUnit_Framework_TestCase
+{
+    public function testSuccess()
+    {
+        $this->assertEquals(1.0, 1.1, '', 0.2);
+    }
+
+    public function testFailure()
+    {
+        $this->assertEquals(1.0, 1.1);
+    }
+}
+?>
+
+phpunit EqualsTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+.F
+
+Time: 0 seconds, Memory: 5.75Mb
+
+There was 1 failure:
+
+1) EqualsTest::testFailure
+Failed asserting that 1.1 matches expected 1.0.
+
+/home/sb/EqualsTest.php:11
+
+FAILURES!
+Tests: 2, Assertions: 2, Failures: 1.
+
+
+
+assertEquals(DOMDocument $expected, DOMDocument $actual[, string $message = ''])
+
+Reports an error identified by $message if the uncommented canonical form of the XML documents represented by the two DOMDocument objects $expected and $actual are not equal.
+
+Example 4.29: Usage of assertEquals() with DOMDocument objects
+
+<?php
+class EqualsTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $expected = new DOMDocument;
+        $expected->loadXML('<foo><bar/></foo>');
+
+        $actual = new DOMDocument;
+        $actual->loadXML('<bar><foo/></bar>');
+
+        $this->assertEquals($expected, $actual);
+    }
+}
+?>
+
+phpunit EqualsTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 5.00Mb
+
+There was 1 failure:
+
+1) EqualsTest::testFailure
+Failed asserting that two DOM documents are equal.
+--- Expected
++++ Actual
+@@ @@
+ <?xml version="1.0"?>
+-<foo>
+-  <bar/>
+-</foo>
++<bar>
++  <foo/>
++</bar>
+
+/home/sb/EqualsTest.php:12
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+
+assertEquals(object $expected, object $actual[, string $message = ''])
+
+Reports an error identified by $message if the two objects $expected and $actual do not have equal attribute values.
+
+Example 4.30: Usage of assertEquals() with objects
+
+<?php
+class EqualsTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $expected = new stdClass;
+        $expected->foo = 'foo';
+        $expected->bar = 'bar';
+
+        $actual = new stdClass;
+        $actual->foo = 'bar';
+        $actual->baz = 'bar';
+
+        $this->assertEquals($expected, $actual);
+    }
+}
+?>
+
+phpunit EqualsTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 5.25Mb
+
+There was 1 failure:
+
+1) EqualsTest::testFailure
+Failed asserting that two objects are equal.
+--- Expected
++++ Actual
+@@ @@
+ stdClass Object (
+-    'foo' => 'foo'
+-    'bar' => 'bar'
++    'foo' => 'bar'
++    'baz' => 'bar'
+ )
+
+/home/sb/EqualsTest.php:14
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+
+assertEquals(array $expected, array $actual[, string $message = ''])
+
+Reports an error identified by $message if the two arrays $expected and $actual are not equal.
+
+Example 4.31: Usage of assertEquals() with arrays
+
+<?php
+class EqualsTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertEquals(array('a', 'b', 'c'), array('a', 'c', 'd'));
+    }
+}
+?>
+
+phpunit EqualsTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 5.25Mb
+
+There was 1 failure:
+
+1) EqualsTest::testFailure
+Failed asserting that two arrays are equal.
+--- Expected
++++ Actual
+@@ @@
+ Array (
+     0 => 'a'
+-    1 => 'b'
+-    2 => 'c'
++    1 => 'c'
++    2 => 'd'
+ )
+
+/home/sb/EqualsTest.php:6
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+
+assertFalse()
+
+assertFalse(bool $condition[, string $message = ''])
+
+Reports an error identified by $message if $condition is TRUE.
+
+Example 4.32: Usage of assertFalse()
+
+<?php
+class FalseTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertFalse(TRUE);
+    }
+}
+?>
+
+phpunit FalseTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 5.00Mb
+
+There was 1 failure:
+
+1) FalseTest::testFailure
+Failed asserting that true is false.
+
+/home/sb/FalseTest.php:6
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+
+assertFileEquals()
+
+assertFileEquals(string $expected, string $actual[, string $message = ''])
+
+Reports an error identified by $message if the file specified by $expected does not have the same contents as the file specified by $actual.
+
+assertFileNotEquals() is the inverse of this assertion and takes the same arguments.
+
+Example 4.33: Usage of assertFileEquals()
+
+<?php
+class FileEqualsTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertFileEquals('/home/sb/expected', '/home/sb/actual');
+    }
+}
+?>
+
+phpunit FileEqualsTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 5.25Mb
+
+There was 1 failure:
+
+1) FileEqualsTest::testFailure
+Failed asserting that two strings are equal.
+--- Expected
++++ Actual
+@@ @@
+-'expected
++'actual
+ '
+
+/home/sb/FileEqualsTest.php:6
+
+FAILURES!
+Tests: 1, Assertions: 3, Failures: 1.
+
+
+
+assertFileExists()
+
+assertFileExists(string $filename[, string $message = ''])
+
+Reports an error identified by $message if the file specified by $filename does not exist.
+
+assertFileNotExists() is the inverse of this assertion and takes the same arguments.
+
+Example 4.34: Usage of assertFileExists()
+
+<?php
+class FileExistsTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertFileExists('/path/to/file');
+    }
+}
+?>
+
+phpunit FileExistsTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 4.75Mb
+
+There was 1 failure:
+
+1) FileExistsTest::testFailure
+Failed asserting that file "/path/to/file" exists.
+
+/home/sb/FileExistsTest.php:6
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+
+assertGreaterThan()
+
+assertGreaterThan(mixed $expected, mixed $actual[, string $message = ''])
+
+Reports an error identified by $message if the value of $actual is not greater than the value of $expected.
+
+assertAttributeGreaterThan() is a convenience wrapper that uses a public, protected, or private attribute of a class or object as the actual value.
+
+Example 4.35: Usage of assertGreaterThan()
+
+<?php
+class GreaterThanTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertGreaterThan(2, 1);
+    }
+}
+?>
+
+phpunit GreaterThanTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 5.00Mb
+
+There was 1 failure:
+
+1) GreaterThanTest::testFailure
+Failed asserting that 1 is greater than 2.
+
+/home/sb/GreaterThanTest.php:6
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+
+assertGreaterThanOrEqual()
+
+assertGreaterThanOrEqual(mixed $expected, mixed $actual[, string $message = ''])
+
+Reports an error identified by $message if the value of $actual is not greater than or equal to the value of $expected.
+
+assertAttributeGreaterThanOrEqual() is a convenience wrapper that uses a public, protected, or private attribute of a class or object as the actual value.
+
+Example 4.36: Usage of assertGreaterThanOrEqual()
+
+<?php
+class GreatThanOrEqualTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertGreaterThanOrEqual(2, 1);
+    }
+}
+?>
+
+phpunit GreaterThanOrEqualTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 5.25Mb
+
+There was 1 failure:
+
+1) GreatThanOrEqualTest::testFailure
+Failed asserting that 1 is equal to 2 or is greater than 2.
+
+/home/sb/GreaterThanOrEqualTest.php:6
+
+FAILURES!
+Tests: 1, Assertions: 2, Failures: 1.
+
+
+
+assertInstanceOf()
+
+assertInstanceOf($expected, $actual[, $message = ''])
+
+Reports an error identified by $message if $actual is not an instance of $expected.
+
+assertNotInstanceOf() is the inverse of this assertion and takes the same arguments.
+
+assertAttributeInstanceOf() and assertAttributeNotInstanceOf() are convenience wrappers that can be applied to a public, protected, or private attribute of a class or object.
+
+Example 4.37: Usage of assertInstanceOf()
+
+<?php
+class InstanceOfTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertInstanceOf('RuntimeException', new Exception);
+    }
+}
+?>
+
+phpunit InstanceOfTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 5.00Mb
+
+There was 1 failure:
+
+1) InstanceOfTest::testFailure
+Failed asserting that Exception Object (...) is an instance of class "RuntimeException".
+
+/home/sb/InstanceOfTest.php:6
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+
+assertInternalType()
+
+assertInternalType($expected, $actual[, $message = ''])
+
+Reports an error identified by $message if $actual is not of the $expected type.
+
+assertNotInternalType() is the inverse of this assertion and takes the same arguments.
+
+assertAttributeInternalType() and assertAttributeNotInternalType() are convenience wrappers that can be applied to a public, protected, or private attribute of a class or object.
+
+Example 4.38: Usage of assertInternalType()
+
+<?php
+class InternalTypeTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertInternalType('string', 42);
+    }
+}
+?>
+
+phpunit InternalTypeTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 5.00Mb
+
+There was 1 failure:
+
+1) InternalTypeTest::testFailure
+Failed asserting that 42 is of type "string".
+
+/home/sb/InternalTypeTest.php:6
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+
+assertJsonFileEqualsJsonFile()
+
+assertJsonFileEqualsJsonFile(mixed $expectedFile, mixed $actualFile[, string $message = ''])
+
+Reports an error identified by $message if the value of $actualFile does not match the value of $expectedFile.
+
+Example 4.39: Usage of assertJsonFileEqualsJsonFile()
+
+<?php
+class JsonFileEqualsJsonFileTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertJsonFileEqualsJsonFile(
+          'path/to/fixture/file', 'path/to/actual/file');
+    }
+}
+?>
+
+phpunit JsonFileEqualsJsonFileTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 5.00Mb
+
+There was 1 failure:
+
+1) JsonFileEqualsJsonFile::testFailure
+Failed asserting that '{"Mascot":"Tux"}' matches JSON string "["Mascott", "Tux", "OS", "Linux"]".
+
+/home/sb/JsonFileEqualsJsonFileTest.php:5
+
+FAILURES!
+Tests: 1, Assertions: 3, Failures: 1.
+
+
+
+assertJsonStringEqualsJsonFile()
+
+assertJsonStringEqualsJsonFile(mixed $expectedFile, mixed $actualJson[, string $message = ''])
+
+Reports an error identified by $message if the value of $actualJson does not match the value of $expectedFile.
+
+Example 4.40: Usage of assertJsonStringEqualsJsonFile()
+
+<?php
+class JsonStringEqualsJsonFileTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertJsonStringEqualsJsonFile(
+          'path/to/fixture/file', json_encode(array("Mascot" => "ux"))
+        );
+    }
+}
+?>
+
+phpunit JsonStringEqualsJsonFileTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 5.00Mb
+
+There was 1 failure:
+
+1) JsonStringEqualsJsonFile::testFailure
+Failed asserting that '{"Mascot":"ux"}' matches JSON string "{"Mascott":"Tux"}".
+
+/home/sb/JsonStringEqualsJsonFileTest.php:5
+
+FAILURES!
+Tests: 1, Assertions: 3, Failures: 1.
+
+
+
+assertJsonStringEqualsJsonString()
+
+assertJsonStringEqualsJsonString(mixed $expectedJson, mixed $actualJson[, string $message = ''])
+
+Reports an error identified by $message if the value of $actualJson does not match the value of $expectedJson.
+
+Example 4.41: Usage of assertJsonStringEqualsJsonString()
+
+<?php
+class JsonStringEqualsJsonStringTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertJsonStringEqualsJsonString(
+          json_encode(array("Mascot" => "Tux")), json_encode(array("Mascott" => "ux"))
+        );
+    }
+}
+?>
+
+phpunit JsonStringEqualsJsonStringTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 5.00Mb
+
+There was 1 failure:
+
+1) JsonStringEqualsJsonStringTest::testFailure
+Failed asserting that two objects are equal.
+--- Expected
++++ Actual
+@@ @@
+ stdClass Object (
+ -    'Mascot' => 'Tux'
+ +    'Mascot' => 'ux'
+)
+
+/home/sb/JsonStringEqualsJsonStringTest.php:5
+
+FAILURES!
+Tests: 1, Assertions: 3, Failures: 1.
+
+
+
+assertLessThan()
+
+assertLessThan(mixed $expected, mixed $actual[, string $message = ''])
+
+Reports an error identified by $message if the value of $actual is not less than the value of $expected.
+
+assertAttributeLessThan() is a convenience wrapper that uses a public, protected, or private attribute of a class or object as the actual value.
+
+Example 4.42: Usage of assertLessThan()
+
+<?php
+class LessThanTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertLessThan(1, 2);
+    }
+}
+?>
+
+phpunit LessThanTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 5.00Mb
+
+There was 1 failure:
+
+1) LessThanTest::testFailure
+Failed asserting that 2 is less than 1.
+
+/home/sb/LessThanTest.php:6
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+
+assertLessThanOrEqual()
+
+assertLessThanOrEqual(mixed $expected, mixed $actual[, string $message = ''])
+
+Reports an error identified by $message if the value of $actual is not less than or equal to the value of $expected.
+
+assertAttributeLessThanOrEqual() is a convenience wrapper that uses a public, protected, or private attribute of a class or object as the actual value.
+
+Example 4.43: Usage of assertLessThanOrEqual()
+
+<?php
+class LessThanOrEqualTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertLessThanOrEqual(1, 2);
+    }
+}
+?>
+
+phpunit LessThanOrEqualTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 5.25Mb
+
+There was 1 failure:
+
+1) LessThanOrEqualTest::testFailure
+Failed asserting that 2 is equal to 1 or is less than 1.
+
+/home/sb/LessThanOrEqualTest.php:6
+
+FAILURES!
+Tests: 1, Assertions: 2, Failures: 1.
+
+
+
+assertNull()
+
+assertNull(mixed $variable[, string $message = ''])
+
+Reports an error identified by $message if $variable is not NULL.
+
+assertNotNull() is the inverse of this assertion and takes the same arguments.
+
+Example 4.44: Usage of assertNull()
+
+<?php
+class NullTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertNull('foo');
+    }
+}
+?>
+
+phpunit NotNullTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 5.00Mb
+
+There was 1 failure:
+
+1) NullTest::testFailure
+Failed asserting that 'foo' is null.
+
+/home/sb/NotNullTest.php:6
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+
+assertObjectHasAttribute()
+
+assertObjectHasAttribute(string $attributeName, object $object[, string $message = ''])
+
+Reports an error identified by $message if $object->attributeName does not exist.
+
+assertObjectNotHasAttribute() is the inverse of this assertion and takes the same arguments.
+
+Example 4.45: Usage of assertObjectHasAttribute()
+
+<?php
+class ObjectHasAttributeTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertObjectHasAttribute('foo', new stdClass);
+    }
+}
+?>
+
+phpunit ObjectHasAttributeTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 4.75Mb
+
+There was 1 failure:
+
+1) ObjectHasAttributeTest::testFailure
+Failed asserting that object of class "stdClass" has attribute "foo".
+
+/home/sb/ObjectHasAttributeTest.php:6
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+
+assertRegExp()
+
+assertRegExp(string $pattern, string $string[, string $message = ''])
+
+Reports an error identified by $message if $string does not match the regular expression $pattern.
+
+assertNotRegExp() is the inverse of this assertion and takes the same arguments.
+
+Example 4.46: Usage of assertRegExp()
+
+<?php
+class RegExpTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertRegExp('/foo/', 'bar');
+    }
+}
+?>
+
+phpunit RegExpTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 5.00Mb
+
+There was 1 failure:
+
+1) RegExpTest::testFailure
+Failed asserting that 'bar' matches PCRE pattern "/foo/".
+
+/home/sb/RegExpTest.php:6
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+
+assertStringMatchesFormat()
+
+assertStringMatchesFormat(string $format, string $string[, string $message = ''])
+
+Reports an error identified by $message if the $string does not match the $format string.
+
+assertStringNotMatchesFormat() is the inverse of this assertion and takes the same arguments.
+
+Example 4.47: Usage of assertStringMatchesFormat()
+
+<?php
+class StringMatchesFormatTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertStringMatchesFormat('%i', 'foo');
+    }
+}
+?>
+
+phpunit StringMatchesFormatTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 5.00Mb
+
+There was 1 failure:
+
+1) StringMatchesFormatTest::testFailure
+Failed asserting that 'foo' matches PCRE pattern "/^[+-]?\d+$/s".
+
+/home/sb/StringMatchesFormatTest.php:6
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+
+The format string may contain the following placeholders:
+
+    %e: Represents a directory separator, for example / on Linux.
+
+    %s: One or more of anything (character or white space) except the end of line character.
+
+    %S: Zero or more of anything (character or white space) except the end of line character.
+
+    %a: One or more of anything (character or white space) including the end of line character.
+
+    %A: Zero or more of anything (character or white space) including the end of line character.
+
+    %w: Zero or more white space characters.
+
+    %i: A signed integer value, for example +3142, -3142.
+
+    %d: An unsigned integer value, for example 123456.
+
+    %x: One or more hexadecimal character. That is, characters in the range 0-9, a-f, A-F.
+
+    %f: A floating point number, for example: 3.142, -3.142, 3.142E-10, 3.142e+10.
+
+    %c: A single character of any sort.
+
+assertStringMatchesFormatFile()
+
+assertStringMatchesFormatFile(string $formatFile, string $string[, string $message = ''])
+
+Reports an error identified by $message if the $string does not match the contents of the $formatFile.
+
+assertStringNotMatchesFormatFile() is the inverse of this assertion and takes the same arguments.
+
+Example 4.48: Usage of assertStringMatchesFormatFile()
+
+<?php
+class StringMatchesFormatFileTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertStringMatchesFormatFile('/path/to/expected.txt', 'foo');
+    }
+}
+?>
+
+phpunit StringMatchesFormatFileTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 5.00Mb
+
+There was 1 failure:
+
+1) StringMatchesFormatFileTest::testFailure
+Failed asserting that 'foo' matches PCRE pattern "/^[+-]?\d+
+$/s".
+
+/home/sb/StringMatchesFormatFileTest.php:6
+
+FAILURES!
+Tests: 1, Assertions: 2, Failures: 1.
+
+
+
+assertSame()
+
+assertSame(mixed $expected, mixed $actual[, string $message = ''])
+
+Reports an error identified by $message if the two variables $expected and $actual do not have the same type and value.
+
+assertNotSame() is the inverse of this assertion and takes the same arguments.
+
+assertAttributeSame() and assertAttributeNotSame() are convenience wrappers that use a public, protected, or private attribute of a class or object as the actual value.
+
+Example 4.49: Usage of assertSame()
+
+<?php
+class SameTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertSame('2204', 2204);
+    }
+}
+?>
+
+phpunit SameTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 5.00Mb
+
+There was 1 failure:
+
+1) SameTest::testFailure
+Failed asserting that 2204 is identical to '2204'.
+
+/home/sb/SameTest.php:6
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+
+assertSame(object $expected, object $actual[, string $message = ''])
+
+Reports an error identified by $message if the two variables $expected and $actual do not reference the same object.
+
+Example 4.50: Usage of assertSame() with objects
+
+<?php
+class SameTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertSame(new stdClass, new stdClass);
+    }
+}
+?>
+
+phpunit SameTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 4.75Mb
+
+There was 1 failure:
+
+1) SameTest::testFailure
+Failed asserting that two variables reference the same object.
+
+/home/sb/SameTest.php:6
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+
+assertSelectCount()
+
+assertSelectCount(array $selector, integer $count, mixed $actual[, string $message = '', boolean $isHtml = TRUE])
+
+Reports an error identified by $message if the CSS selector $selector does not match $count elements in the DOMNode $actual.
+
+$count can be one of the following types:
+
+    boolean: Asserts for presence of elements matching the selector (TRUE) or absence of elements (FALSE).
+    integer: Asserts the count of elements.
+    array: Asserts that the count is in a range specified by using <, >, <=, and >= as keys.
+
+Example 4.51: Usage of assertSelectCount()
+
+<?php
+class SelectCountTest extends PHPUnit_Framework_TestCase
+{
+    protected function setUp()
+    {
+        $this->xml = new DomDocument;
+        $this->xml->loadXML('<foo><bar/><bar/><bar/></foo>');
+    }
+
+    public function testAbsenceFailure()
+    {
+        $this->assertSelectCount('foo bar', FALSE, $this->xml);
+    }
+
+    public function testPresenceFailure()
+    {
+        $this->assertSelectCount('foo baz', TRUE, $this->xml);
+    }
+
+    public function testExactCountFailure()
+    {
+        $this->assertSelectCount('foo bar', 5, $this->xml);
+    }
+
+    public function testRangeFailure()
+    {
+        $this->assertSelectCount('foo bar', array('>'=>6, '<'=>8), $this->xml);
+    }
+}
+?>
+
+phpunit SelectCountTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+FFFF
+
+Time: 0 seconds, Memory: 5.50Mb
+
+There were 4 failures:
+
+1) SelectCountTest::testAbsenceFailure
+Failed asserting that true is false.
+
+/home/sb/SelectCountTest.php:12
+
+2) SelectCountTest::testPresenceFailure
+Failed asserting that false is true.
+
+/home/sb/SelectCountTest.php:17
+
+3) SelectCountTest::testExactCountFailure
+Failed asserting that 3 matches expected 5.
+
+/home/sb/SelectCountTest.php:22
+
+4) SelectCountTest::testRangeFailure
+Failed asserting that false is true.
+
+/home/sb/SelectCountTest.php:27
+
+FAILURES!
+Tests: 4, Assertions: 4, Failures: 4.
+
+
+
+assertSelectEquals()
+
+assertSelectEquals(array $selector, string $content, integer $count, mixed $actual[, string $message = '', boolean $isHtml = TRUE])
+
+Reports an error identified by $message if the CSS selector $selector does not match $count elements in the DOMNode $actual with the value $content.
+
+$count can be one of the following types:
+
+    boolean: Asserts for presence of elements matching the selector (TRUE) or absence of elements (FALSE).
+    integer: Asserts the count of elements.
+    array: Asserts that the count is in a range specified by using <, >, <=, and >= as keys.
+
+Example 4.52: Usage of assertSelectEquals()
+
+<?php
+class SelectEqualsTest extends PHPUnit_Framework_TestCase
+{
+    protected function setUp()
+    {
+        $this->xml = new DomDocument;
+        $this->xml->loadXML('<foo><bar>Baz</bar><bar>Baz</bar></foo>');
+    }
+
+    public function testAbsenceFailure()
+    {
+        $this->assertSelectEquals('foo bar', 'Baz', FALSE, $this->xml);
+    }
+
+    public function testPresenceFailure()
+    {
+        $this->assertSelectEquals('foo bar', 'Bat', TRUE, $this->xml);
+    }
+
+    public function testExactCountFailure()
+    {
+        $this->assertSelectEquals('foo bar', 'Baz', 5, $this->xml);
+    }
+
+    public function testRangeFailure()
+    {
+        $this->assertSelectEquals('foo bar', 'Baz', array('>'=>6, '<'=>8), $this->xml);
+    }
+}
+?>
+
+phpunit SelectEqualsTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+FFFF
+
+Time: 0 seconds, Memory: 5.50Mb
+
+There were 4 failures:
+
+1) SelectEqualsTest::testAbsenceFailure
+Failed asserting that true is false.
+
+/home/sb/SelectEqualsTest.php:12
+
+2) SelectEqualsTest::testPresenceFailure
+Failed asserting that false is true.
+
+/home/sb/SelectEqualsTest.php:17
+
+3) SelectEqualsTest::testExactCountFailure
+Failed asserting that 2 matches expected 5.
+
+/home/sb/SelectEqualsTest.php:22
+
+4) SelectEqualsTest::testRangeFailure
+Failed asserting that false is true.
+
+/home/sb/SelectEqualsTest.php:27
+
+FAILURES!
+Tests: 4, Assertions: 4, Failures: 4.
+
+
+
+assertSelectRegExp()
+
+assertSelectRegExp(array $selector, string $pattern, integer $count, mixed $actual[, string $message = '', boolean $isHtml = TRUE])
+
+Reports an error identified by $message if the CSS selector $selector does not match $count elements in the DOMNode $actual with a value that matches $pattern.
+
+$count can be one of the following types:
+
+    boolean: Asserts for presence of elements matching the selector (TRUE) or absence of elements (FALSE).
+    integer: Asserts the count of elements.
+    array: Asserts that the count is in a range specified by using <, >, <=, and >= as keys.
+
+Example 4.53: Usage of assertSelectRegExp()
+
+<?php
+class SelectRegExpTest extends PHPUnit_Framework_TestCase
+{
+    protected function setUp()
+    {
+        $this->xml = new DomDocument;
+        $this->xml->loadXML('<foo><bar>Baz</bar><bar>Baz</bar></foo>');
+    }
+
+    public function testAbsenceFailure()
+    {
+        $this->assertSelectRegExp('foo bar', '/Ba.*/', FALSE, $this->xml);
+    }
+
+    public function testPresenceFailure()
+    {
+        $this->assertSelectRegExp('foo bar', '/B[oe]z]/', TRUE, $this->xml);
+    }
+
+    public function testExactCountFailure()
+    {
+        $this->assertSelectRegExp('foo bar', '/Ba.*/', 5, $this->xml);
+    }
+
+    public function testRangeFailure()
+    {
+        $this->assertSelectRegExp('foo bar', '/Ba.*/', array('>'=>6, '<'=>8), $this->xml);
+    }
+}
+?>
+
+phpunit SelectRegExpTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+FFFF
+
+Time: 0 seconds, Memory: 5.50Mb
+
+There were 4 failures:
+
+1) SelectRegExpTest::testAbsenceFailure
+Failed asserting that true is false.
+
+/home/sb/SelectRegExpTest.php:12
+
+2) SelectRegExpTest::testPresenceFailure
+Failed asserting that false is true.
+
+/home/sb/SelectRegExpTest.php:17
+
+3) SelectRegExpTest::testExactCountFailure
+Failed asserting that 2 matches expected 5.
+
+/home/sb/SelectRegExpTest.php:22
+
+4) SelectRegExpTest::testRangeFailure
+Failed asserting that false is true.
+
+/home/sb/SelectRegExpTest.php:27
+
+FAILURES!
+Tests: 4, Assertions: 4, Failures: 4.
+
+
+
+assertStringEndsWith()
+
+assertStringEndsWith(string $suffix, string $string[, string $message = ''])
+
+Reports an error identified by $message if the $string does not end with $suffix.
+
+assertStringEndsNotWith() is the inverse of this assertion and takes the same arguments.
+
+Example 4.54: Usage of assertStringEndsWith()
+
+<?php
+class StringEndsWithTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertStringEndsWith('suffix', 'foo');
+    }
+}
+?>
+
+phpunit StringEndsWithTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 1 second, Memory: 5.00Mb
+
+There was 1 failure:
+
+1) StringEndsWithTest::testFailure
+Failed asserting that 'foo' ends with "suffix".
+
+/home/sb/StringEndsWithTest.php:6
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+
+assertStringEqualsFile()
+
+assertStringEqualsFile(string $expectedFile, string $actualString[, string $message = ''])
+
+Reports an error identified by $message if the file specified by $expectedFile does not have $actualString as its contents.
+
+assertStringNotEqualsFile() is the inverse of this assertion and takes the same arguments.
+
+Example 4.55: Usage of assertStringEqualsFile()
+
+<?php
+class StringEqualsFileTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertStringEqualsFile('/home/sb/expected', 'actual');
+    }
+}
+?>
+
+phpunit StringEqualsFileTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 5.25Mb
+
+There was 1 failure:
+
+1) StringEqualsFileTest::testFailure
+Failed asserting that two strings are equal.
+--- Expected
++++ Actual
+@@ @@
+-'expected
+-'
++'actual'
+
+/home/sb/StringEqualsFileTest.php:6
+
+FAILURES!
+Tests: 1, Assertions: 2, Failures: 1.
+
+
+
+assertStringStartsWith()
+
+assertStringStartsWith(string $prefix, string $string[, string $message = ''])
+
+Reports an error identified by $message if the $string does not start with $prefix.
+
+assertStringStartsNotWith() is the inverse of this assertion and takes the same arguments.
+
+Example 4.56: Usage of assertStringStartsWith()
+
+<?php
+class StringStartsWithTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertStringStartsWith('prefix', 'foo');
+    }
+}
+?>
+
+phpunit StringStartsWithTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 5.00Mb
+
+There was 1 failure:
+
+1) StringStartsWithTest::testFailure
+Failed asserting that 'foo' starts with "prefix".
+
+/home/sb/StringStartsWithTest.php:6
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+
+assertTag()
+
+assertTag(array $matcher, string $actual[, string $message = '', boolean $isHtml = TRUE])
+
+Reports an error identified by $message if $actual is not matched by the $matcher.
+
+$matcher is an associative array that specifies the match criteria for the assertion:
+
+    id: The node with the given id attribute must match the corresponsing value.
+    tag: The node type must match the corresponding value.
+    attributes: The node's attributes must match the corresponsing values in the $attributes associative array.
+    content: The text content must match the given value.
+    parent: The node's parent must match the $parent associative array.
+    child: At least one of the node's immediate children must meet the criteria described by the $child associative array.
+    ancestor: At least one of the node's ancestors must meet the criteria described by the $ancestor associative array.
+    descendant: At least one of the node's descendants must meet the criteria described by the $descendant associative array.
+    children: Associative array for counting children of a node.
+        count: The number of matching children must be equal to this number.
+        less_than: The number of matching children must be less than this number.
+        greater_than: The number of matching children must be greater than this number.
+        only: Another associative array consisting of the keys to use to match on the children, and only matching children will be counted.
+
+assertNotTag() is the inverse of this assertion and takes the same arguments.
+
+Example 4.57: Usage of assertTag()
+
+<?php
+// Matcher that asserts that there is an element with an id="my_id".
+$matcher = array('id' => 'my_id');
+
+// Matcher that asserts that there is a "span" tag.
+$matcher = array('tag' => 'span');
+
+// Matcher that asserts that there is a "span" tag with the content
+// "Hello World".
+$matcher = array('tag' => 'span', 'content' => 'Hello World');
+
+// Matcher that asserts that there is a "span" tag with content matching the
+// regular expression pattern.
+$matcher = array('tag' => 'span', 'content' => 'regexp:/Try P(HP|ython)/');
+
+// Matcher that asserts that there is a "span" with an "list" class attribute.
+$matcher = array(
+  'tag'        => 'span',
+  'attributes' => array('class' => 'list')
+);
+
+// Matcher that asserts that there is a "span" inside of a "div".
+$matcher = array(
+  'tag'    => 'span',
+  'parent' => array('tag' => 'div')
+);
+
+// Matcher that asserts that there is a "span" somewhere inside a "table".
+$matcher = array(
+  'tag'      => 'span',
+  'ancestor' => array('tag' => 'table')
+);
+
+// Matcher that asserts that there is a "span" with at least one "em" child.
+$matcher = array(
+  'tag'   => 'span',
+  'child' => array('tag' => 'em')
+);
+
+// Matcher that asserts that there is a "span" containing a (possibly nested)
+// "strong" tag.
+$matcher = array(
+  'tag'        => 'span',
+  'descendant' => array('tag' => 'strong')
+);
+
+// Matcher that asserts that there is a "span" containing 5-10 "em" tags as
+// immediate children.
+$matcher = array(
+  'tag'      => 'span',
+  'children' => array(
+    'less_than'    => 11,
+    'greater_than' => 4,
+    'only'         => array('tag' => 'em')
+  )
+);
+
+// Matcher that asserts that there is a "div", with an "ul" ancestor and a "li"
+// parent (with class="enum"), and containing a "span" descendant that contains
+// an element with id="my_test" and the text "Hello World".
+$matcher = array(
+  'tag'        => 'div',
+  'ancestor'   => array('tag' => 'ul'),
+  'parent'     => array(
+    'tag'        => 'li',
+    'attributes' => array('class' => 'enum')
+  ),
+  'descendant' => array(
+    'tag'   => 'span',
+    'child' => array(
+      'id'      => 'my_test',
+      'content' => 'Hello World'
+    )
+  )
+);
+
+// Use assertTag() to apply a $matcher to a piece of $html.
+$this->assertTag($matcher, $html);
+
+// Use assertTag() to apply a $matcher to a piece of $xml.
+$this->assertTag($matcher, $xml, '', FALSE);
+?>
+
+
+
+assertThat()
+
+More complex assertions can be formulated using the PHPUnit_Framework_Constraint classes. They can be evaluated using the assertThat() method. Example 4.58 shows how the logicalNot() and equalTo() constraints can be used to express the same assertion as assertNotEquals().
+
+assertThat(mixed $value, PHPUnit_Framework_Constraint $constraint[, $message = ''])
+
+Reports an error identified by $message if the $value does not match the $constraint.
+
+Example 4.58: Usage of assertThat()
+
+<?php
+class BiscuitTest extends PHPUnit_Framework_TestCase
+{
+    public function testEquals()
+    {
+        $theBiscuit = new Biscuit('Ginger');
+        $myBiscuit  = new Biscuit('Ginger');
+
+        $this->assertThat(
+          $theBiscuit,
+          $this->logicalNot(
+            $this->equalTo($myBiscuit)
+          )
+        );
+    }
+}
+?>
+
+
+
+Table 4.3 shows the available PHPUnit_Framework_Constraint classes.
+
+Table 4.3. Constraints
+Constraint	Meaning
+PHPUnit_Framework_Constraint_Attribute attribute(PHPUnit_Framework_Constraint $constraint, $attributeName)	Constraint that applies another constraint to an attribute of a class or an object.
+PHPUnit_Framework_Constraint_IsAnything anything()	Constraint that accepts any input value.
+PHPUnit_Framework_Constraint_ArrayHasKey arrayHasKey(mixed $key)	Constraint that asserts that the array it is evaluated for has a given key.
+PHPUnit_Framework_Constraint_TraversableContains contains(mixed $value)	Constraint that asserts that the array or object that implements the Iterator interface it is evaluated for contains a given value.
+PHPUnit_Framework_Constraint_TraversableContainsOnly containsOnly(string $type)	Constraint that asserts that the array or object that implements the Iterator interface it is evaluated for contains only values of a given type.
+PHPUnit_Framework_Constraint_TraversableContainsOnly containsOnlyInstancesOf(string $classname)	Constraint that asserts that the array or object that implements the Iterator interface it is evaluated for contains only instances of a given classname.
+PHPUnit_Framework_Constraint_IsEqual equalTo($value, $delta = 0, $maxDepth = 10)	Constraint that checks if one value is equal to another.
+PHPUnit_Framework_Constraint_Attribute attributeEqualTo($attributeName, $value, $delta = 0, $maxDepth = 10)	Constraint that checks if a value is equal to an attribute of a class or of an object.
+PHPUnit_Framework_Constraint_FileExists fileExists()	Constraint that checks if the file(name) that it is evaluated for exists.
+PHPUnit_Framework_Constraint_GreaterThan greaterThan(mixed $value)	Constraint that asserts that the value it is evaluated for is greater than a given value.
+PHPUnit_Framework_Constraint_Or greaterThanOrEqual(mixed $value)	Constraint that asserts that the value it is evaluated for is greater than or equal to a given value.
+PHPUnit_Framework_Constraint_ClassHasAttribute classHasAttribute(string $attributeName)	Constraint that asserts that the class it is evaluated for has a given attribute.
+PHPUnit_Framework_Constraint_ClassHasStaticAttribute classHasStaticAttribute(string $attributeName)	Constraint that asserts that the class it is evaluated for has a given static attribute.
+PHPUnit_Framework_Constraint_ObjectHasAttribute hasAttribute(string $attributeName)	Constraint that asserts that the object it is evaluated for has a given attribute.
+PHPUnit_Framework_Constraint_IsIdentical identicalTo(mixed $value)	Constraint that asserts that one value is identical to another.
+PHPUnit_Framework_Constraint_IsFalse isFalse()	Constraint that asserts that the value it is evaluated is FALSE.
+PHPUnit_Framework_Constraint_IsInstanceOf isInstanceOf(string $className)	Constraint that asserts that the object it is evaluated for is an instance of a given class.
+PHPUnit_Framework_Constraint_IsNull isNull()	Constraint that asserts that the value it is evaluated is NULL.
+PHPUnit_Framework_Constraint_IsTrue isTrue()	Constraint that asserts that the value it is evaluated is TRUE.
+PHPUnit_Framework_Constraint_IsType isType(string $type)	Constraint that asserts that the value it is evaluated for is of a specified type.
+PHPUnit_Framework_Constraint_LessThan lessThan(mixed $value)	Constraint that asserts that the value it is evaluated for is smaller than a given value.
+PHPUnit_Framework_Constraint_Or lessThanOrEqual(mixed $value)	Constraint that asserts that the value it is evaluated for is smaller than or equal to a given value.
+logicalAnd()	Logical AND.
+logicalNot(PHPUnit_Framework_Constraint $constraint)	Logical NOT.
+logicalOr()	Logical OR.
+logicalXor()	Logical XOR.
+PHPUnit_Framework_Constraint_PCREMatch matchesRegularExpression(string $pattern)	Constraint that asserts that the string it is evaluated for matches a regular expression.
+PHPUnit_Framework_Constraint_StringContains stringContains(string $string, bool $case)	Constraint that asserts that the string it is evaluated for contains a given string.
+PHPUnit_Framework_Constraint_StringEndsWith stringEndsWith(string $suffix)	Constraint that asserts that the string it is evaluated for ends with a given suffix.
+PHPUnit_Framework_Constraint_StringStartsWith stringStartsWith(string $prefix)	Constraint that asserts that the string it is evaluated for starts with a given prefix.
+
+
+assertTrue()
+
+assertTrue(bool $condition[, string $message = ''])
+
+Reports an error identified by $message if $condition is FALSE.
+
+Example 4.59: Usage of assertTrue()
+
+<?php
+class TrueTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertTrue(FALSE);
+    }
+}
+?>
+
+phpunit TrueTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 5.00Mb
+
+There was 1 failure:
+
+1) TrueTest::testFailure
+Failed asserting that false is true.
+
+/home/sb/TrueTest.php:6
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+
+assertXmlFileEqualsXmlFile()
+
+assertXmlFileEqualsXmlFile(string $expectedFile, string $actualFile[, string $message = ''])
+
+Reports an error identified by $message if the XML document in $actualFile is not equal to the XML document in $expectedFile.
+
+assertXmlFileNotEqualsXmlFile() is the inverse of this assertion and takes the same arguments.
+
+Example 4.60: Usage of assertXmlFileEqualsXmlFile()
+
+<?php
+class XmlFileEqualsXmlFileTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertXmlFileEqualsXmlFile(
+          '/home/sb/expected.xml', '/home/sb/actual.xml');
+    }
+}
+?>
+
+phpunit XmlFileEqualsXmlFileTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 5.25Mb
+
+There was 1 failure:
+
+1) XmlFileEqualsXmlFileTest::testFailure
+Failed asserting that two DOM documents are equal.
+--- Expected
++++ Actual
+@@ @@
+ <?xml version="1.0"?>
+ <foo>
+-  <bar/>
++  <baz/>
+ </foo>
+
+/home/sb/XmlFileEqualsXmlFileTest.php:7
+
+FAILURES!
+Tests: 1, Assertions: 3, Failures: 1.
+
+
+
+assertXmlStringEqualsXmlFile()
+
+assertXmlStringEqualsXmlFile(string $expectedFile, string $actualXml[, string $message = ''])
+
+Reports an error identified by $message if the XML document in $actualXml is not equal to the XML document in $expectedFile.
+
+assertXmlStringNotEqualsXmlFile() is the inverse of this assertion and takes the same arguments.
+
+Example 4.61: Usage of assertXmlStringEqualsXmlFile()
+
+<?php
+class XmlStringEqualsXmlFileTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertXmlStringEqualsXmlFile(
+          '/home/sb/expected.xml', '<foo><baz/></foo>');
+    }
+}
+?>
+
+phpunit XmlStringEqualsXmlFileTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 5.25Mb
+
+There was 1 failure:
+
+1) XmlStringEqualsXmlFileTest::testFailure
+Failed asserting that two DOM documents are equal.
+--- Expected
++++ Actual
+@@ @@
+ <?xml version="1.0"?>
+ <foo>
+-  <bar/>
++  <baz/>
+ </foo>
+
+/home/sb/XmlStringEqualsXmlFileTest.php:7
+
+FAILURES!
+Tests: 1, Assertions: 2, Failures: 1.
+
+
+
+assertXmlStringEqualsXmlString()
+
+assertXmlStringEqualsXmlString(string $expectedXml, string $actualXml[, string $message = ''])
+
+Reports an error identified by $message if the XML document in $actualXml is not equal to the XML document in $expectedXml.
+
+assertXmlStringNotEqualsXmlString() is the inverse of this assertion and takes the same arguments.
+
+Example 4.62: Usage of assertXmlStringEqualsXmlString()
+
+<?php
+class XmlStringEqualsXmlStringTest extends PHPUnit_Framework_TestCase
+{
+    public function testFailure()
+    {
+        $this->assertXmlStringEqualsXmlString(
+          '<foo><bar/></foo>', '<foo><baz/></foo>');
+    }
+}
+?>
+
+phpunit XmlStringEqualsXmlStringTest
+PHPUnit 3.7.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 5.00Mb
+
+There was 1 failure:
+
+1) XmlStringEqualsXmlStringTest::testFailure
+Failed asserting that two DOM documents are equal.
+--- Expected
++++ Actual
+@@ @@
+ <?xml version="1.0"?>
+ <foo>
+-  <bar/>
++  <baz/>
+ </foo>
+
+/home/sb/XmlStringEqualsXmlStringTest.php:7
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+
+Error output
+
+Whenever a test fails PHPUnit tries its best to provide you with as much context as possible that can help to identify the problem.
+
+Example 4.63: Error output generated when an array comparison fails
+
+<?php
+class ArrayDiffTest extends PHPUnit_Framework_TestCase
+{
+    public function testEquality() {
+        $this->assertEquals(
+            array(1,2,3 ,4,5,6),
+            array(1,2,33,4,5,6)
+        );
+    }
+}
+?>
+
+phpunit ArrayDiffTest
+PHPUnit 3.6.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 5.25Mb
+
+There was 1 failure:
+
+1) ArrayDiffTest::testEquality
+Failed asserting that two arrays are equal.
+--- Expected
++++ Actual
+@@ @@
+ Array (
+     0 => 1
+     1 => 2
+-    2 => 3
++    2 => 33
+     3 => 4
+     4 => 5
+     5 => 6
+ )
+
+/home/sb/ArrayDiffTest.php:7
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+
+In this example only one of the array values differs and the other values are shown to provide context on where the error occurred.
+
+When the generated output would be long to read PHPUnit will split it up and provide a few lines of context around every difference.
+
+Example 4.64: Error output when an array comparison of an long array fails
+
+<?php
+class LongArrayDiffTest extends PHPUnit_Framework_TestCase
+{
+    public function testEquality() {
+        $this->assertEquals(
+            array(0,0,0,0,0,0,0,0,0,0,0,0,1,2,3 ,4,5,6),
+            array(0,0,0,0,0,0,0,0,0,0,0,0,1,2,33,4,5,6)
+        );
+    }
+}
+?>
+
+phpunit LongArrayDiffTest
+PHPUnit 3.6.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 5.25Mb
+
+There was 1 failure:
+
+1) LongArrayDiffTest::testEquality
+Failed asserting that two arrays are equal.
+--- Expected
++++ Actual
+@@ @@
+     13 => 2
+-    14 => 3
++    14 => 33
+     15 => 4
+     16 => 5
+     17 => 6
+ )
+
+
+/home/sb/LongArrayDiffTest.php:7
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+
+Edge cases
+
+When a comparison fails PHPUnit creates textual representations of the input values and compares those. Due to that implementation a diff might show more problems than actually exist.
+
+This only happens when using assertEquals or other 'weak' comparison functions on arrays or objects.
+
+Example 4.65: Edge case in the diff generation when using weak comparison
+
+<?php
+class ArrayWeakComparisonTest extends PHPUnit_Framework_TestCase
+{
+    public function testEquality() {
+        $this->assertEquals(
+            array(1  ,2,3 ,4,5,6),
+            array('1',2,33,4,5,6)
+        );
+    }
+}
+?>
+
+phpunit ArrayWeakComparisonTest
+PHPUnit 3.6.0 by Sebastian Bergmann.
+
+F
+
+Time: 0 seconds, Memory: 5.25Mb
+
+There was 1 failure:
+
+1) ArrayWeakComparisonTest::testEquality
+Failed asserting that two arrays are equal.
+--- Expected
++++ Actual
+@@ @@
+ Array (
+-    0 => 1
++    0 => '1'
+     1 => 2
+-    2 => 3
++    2 => 33
+     3 => 4
+     4 => 5
+     5 => 6
+ )
+
+
+/home/sb/ArrayWeakComparisonTest.php:7
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.
+
+
+
+In this example the difference in the first index between 1 and '1' is reported even so assertEquals considers the values as a match.
+Prev
+Next
+
+Copyright © 2005-2017 Sebastian Bergmann.
+

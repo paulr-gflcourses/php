@@ -1,21 +1,11 @@
 <?php
-require 'CsvFileIterator.php';
-
-class DataTest extends PHPUnit_Framework_TestCase
+class ContainsTest extends PHPUnit_Framework_TestCase
 {
-        /**
-          * @dataProvider provider
-          */
-        public function testAdd($a, $b, $c)
+        public function testFailure()
         {
-                    $this->assertEquals($c, $a + $b);
+                    $this->assertContains('baz', 'foobar');
                         
 }
 
-    public function provider()
-    {
-                return new CsvFileIterator('data.csv');
-                    
-    }
-
 }
+?>
