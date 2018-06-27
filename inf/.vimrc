@@ -57,6 +57,12 @@ if has("gui_running")
     set termguicolors
     set langmenu=ru_RU.UTF-8
   endif
+elseif !has("termguicolors")
+  " set Vim-specific sequences for RGB colors
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+endif
+
 endif
 
 let g:NERDTreeDirArrowExpandable = '▸'
@@ -102,6 +108,9 @@ set ai
 set hlsearch
 set incsearch
 
+
+set foldenable
+set foldmethod=indent
 "--- syntastic settings
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
