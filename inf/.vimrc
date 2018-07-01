@@ -7,6 +7,8 @@ call plug#begin('~/.vim/plugged')
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-surround'           " Изменение окружающих символов, тегов
 
+Plug 'tpope/vim-repeat'
+
 Plug 'kien/ctrlp.vim'
 Plug 'rking/ag.vim'                 " Поиск по файлам
 
@@ -19,13 +21,15 @@ Plug 'scrooloose/nerdcommenter'    "Комментарии
 Plug 'jlanzarotta/bufexplorer'      "Переключение между буферами
 
 
-    Plug 'MarcWeber/vim-addon-mw-utils'
-    Plug 'tomtom/tlib_vim'
-    Plug 'garbas/vim-snipmate'
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'tomtom/tlib_vim'
+Plug 'garbas/vim-snipmate'
 
         " Optional:
-    Plug 'honza/vim-snippets'
+Plug 'honza/vim-snippets'
 
+
+Plug 'mattn/emmet-vim'
 " GIT
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
@@ -33,9 +37,9 @@ Plug 'airblade/vim-gitgutter'
 " On-demand loading
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 
-"Plug 'bling/vim-airline'
-"Plug 'vim-airline/vim-airline'     " Статустная панель 
-"Plug 'vim-airline/vim-airline-themes'
+Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline'     " Статустная панель 
+Plug 'vim-airline/vim-airline-themes'
 " Colorschemes
 Plug 'morhetz/gruvbox'
 Plug 'altercation/vim-colors-solarized'
@@ -43,11 +47,6 @@ Plug 'altercation/vim-colors-solarized'
 
 
 call plug#end()
-
-set encoding=utf-8                                  " set charset translation encoding
-set termencoding=utf-8                              " set terminal encoding
-set fileencoding=utf-8                              " set save encoding
-set fileencodings=utf8,koi8r,cp1251,cp866,ucs-2le   " список предполагаемых кодировок, в порядке предпочтения
 
 if has("gui_running")
   if has("gui_gtk2")
@@ -57,7 +56,19 @@ if has("gui_running")
     set termguicolors
     set langmenu=ru_RU.UTF-8
   endif
+elseif !has("termguicolors")
+      " set Vim-specific sequences for RGB colors
+    "let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+    "let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+else
+    set termguicolors
 endif
+
+
+set encoding=utf-8                                  " set charset translation encoding
+set termencoding=utf-8                              " set terminal encoding
+set fileencoding=utf-8                              " set save encoding
+set fileencodings=utf8,koi8r,cp1251,cp866,ucs-2le   " список предполагаемых кодировок, в порядке предпочтения
 
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
@@ -102,10 +113,15 @@ set ai
 set hlsearch
 set incsearch
 
+
+set foldenable
+set foldmethod=syntax
 "--- syntastic settings
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
+
+"set backspace=indent,eol,start
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
@@ -115,7 +131,7 @@ let g:syntastic_enable_signs=1
 let g:syntastic_php_checkers = ['php', 'phpcs', 'phpmd']
 "---
 
-"let g:airline_theme='simple'
+let g:airline_theme='simple'
 "set termguicolors
 "set t_Co=256
 
@@ -124,6 +140,7 @@ syntax enable
 
 set background=dark
 colorscheme gruvbox
-"colorscheme solarized
+set background=light
+colorscheme solarized
 
 
