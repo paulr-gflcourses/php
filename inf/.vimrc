@@ -25,7 +25,7 @@ Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tomtom/tlib_vim'
 Plug 'garbas/vim-snipmate'
 
-        " Optional:
+" Optional:
 Plug 'honza/vim-snippets'
 
 
@@ -49,19 +49,25 @@ Plug 'altercation/vim-colors-solarized'
 call plug#end()
 
 if has("gui_running")
-  if has("gui_gtk2")
-    set guifont=Inconsolata\ 12
-  elseif has("gui_win32")
-    set guifont=Consolas:h11
-    set termguicolors
-    set langmenu=ru_RU.UTF-8
-  endif
-elseif !has("termguicolors")
-      " set Vim-specific sequences for RGB colors
-    "let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-    "let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+    set ff=dos
+    " Удаление символов бэкспэйсом в Windows
+    set backspace=indent,eol,start
+    if has("gui_gtk2")
+        set guifont=Inconsolata\ 12
+    elseif has("gui_win32")
+        set guifont=Consolas:h11
+        set termguicolors
+        set langmenu=ru_RU.UTF-8
+    endif
 else
-    set termguicolors
+    set ff=unix
+    if !has("termguicolors")
+        " set Vim-specific sequences for RGB colors
+        "let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+        "let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+    else
+        set termguicolors
+    endif
 endif
 
 
@@ -89,14 +95,14 @@ map <Leader> <Plug>(easymotion-prefix)
 nmap <C-F5> <Esc>:BufExplorer<cr>
 vmap <C-F5> <esc>:BufExplorer<cr>
 imap <C-F5> <esc>:BufExplorer<cr>
-    " F6 - предыдущий буфер
- nmap <C-F6> :bp<cr>
- vmap <C-F6> <esc>:bp<cr>i
- imap <C-F6> <esc>:bp<cr>i
-    " F7 - следующий буфер
- nmap <C-F7> :bn<cr>
- vmap <C-F7> <esc>:bn<cr>i
- imap <C-F7> <esc>:bn<cr>i
+" F6 - предыдущий буфер
+nmap <C-F6> :bp<cr>
+vmap <C-F6> <esc>:bp<cr>i
+imap <C-F6> <esc>:bp<cr>i
+" F7 - следующий буфер
+nmap <C-F7> :bn<cr>
+vmap <C-F7> <esc>:bn<cr>i
+imap <C-F7> <esc>:bn<cr>i
 "---
 
 nmap <F8> :TagbarToggle<CR>
@@ -115,13 +121,68 @@ set incsearch
 
 
 set foldenable
-set foldmethod=syntax
+set foldlevel=100
+set foldmethod=indent
+
+
+set nocompatible
+" Показывать положение курсора всё время.
+set ruler
+" " Показывать незавершённые команды в статусбаре
+set showcmd
+
+" Поддержка мыши
+set mouse=a
+set mousemodel=popup
+" Скрывать указатель мыши, когда печатаем
+set mousehide
+
+" Не выгружать буфер, когда переключаемся на другой
+" Это позволяет редактировать несколько файлов в один и тот же момент без
+" необходимости сохранения каждый раз
+" когда переключаешься между ними
+set hidden
+" Скрыть панель в gui версии
+set guioptions-=T
+" Сделать строку команд высотой в одну строку
+set ch=1
+
+" Не переносить строки
+set nowrap
+
+
+" Подсвечивать линию текста, на которой находится курсор
+set cursorline
+highlight CursorLine guibg=lightblue ctermbg=lightgray
+highlight CursorLine term=none cterm=none
+" Увеличение размера истории
+set history=200
+" Дополнительная информация в строке состояния
+set wildmenu
+" Настройка отображения специальных символов
+"set list listchars=tab:→\ ,trail:·
+" Включение сторонних плагинов
+filetype plugin on
+
+if filereadable(".vim_config")
+    source .vim_config
+endif
+
 "--- syntastic settings
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
-"set backspace=indent,eol,start
+"function! SuperCleverTab()
+    "if strpart( getline('.'), 0, col('.')-1  ) =~ '^\s*$'
+        "return "\<Tab>"
+    "else
+        "return "\<C-p>"
+    "endif
+"endfunction
+
+"inoremap <Tab> <C-R>=SuperCleverTab()<cr>
+
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
