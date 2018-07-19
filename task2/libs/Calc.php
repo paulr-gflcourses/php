@@ -3,26 +3,39 @@
 class Calc
 {
     private $mem;
-	private $a;
-	private $b;
-	
-	function __construct($a, $b){
-		$this->a = $a;
-		$this->b = $b;
-	}
+    private $a;
+    private $b;
+    private $result;
+
+    private $errors;    
+
+    function __construct($a, $b)
+    {
+        if (!is_numeric($a)||!is_numeric($b))
+        {
+            $this->errors[] = ERR_OPERAND_NOT_NUMBER;
+        }else
+        {
+            $this->a = $a;
+            $this->b = $b;
+        }
+    }
 
     public function add()
     {
-        return $this->a+$this->b;
+        $this->result = $this->a+$this->b;
+        return $this->result;
     }
 
     public function substract()
     {
-        return $this->a-$this->b;
+        $this->result = $this->a-$this->b;
+        return $this->result;
     }
     public function multiply()
     {
-        return $this->a*$this->b;
+        $this->result = $this->a*$this->b;
+        return $this->result;
     }
 
     public function divide()
@@ -30,53 +43,81 @@ class Calc
         if ($this->b===0)
         {
             return DIVISION_BY_ZERO;
+        }else
+        {
+            $this->result = $this->a/$this->b;
+            return $this->result;
         }
-        return $this->a/$this->b;
     }
-    
+
 
     public function squareRoot()
     {
         if ($this->a<0)
         {
             return NEGATIVE_SQUARE_ROOT;
+        }else
+        {
+            $this->result = sqrt($this->a);
+            return $this->result;
+
         }
-        return sqrt($this->a);
     }
 
     public function mod()
     {
-		if ($this->b===0)
+        if ($this->b===0)
         {
             return DIVISION_BY_ZERO;
+        }else
+        {
+
+            $this->result = $this->a%$this->b;
+            return $this->result;
         }
-        return $this->a%$this->b;
     }
 
 
     public function frac()
     {
-        return 1/$this->a;
+        if ($this->b===0)
+        {
+            return DIVISION_BY_ZERO;
+        }else
+        {
+
+            $this->result = 1/$this->a;
+            return $this->result;
+        }
+
     }
 
     public function neg()
     {
-        return -$this->a;
+        $this->result = -$this->a;
+        return $this->result;
     }
 
 
     public function getMem()
     {
-		return $this->mem;
+        return $this->mem;
     }
 
 
-    public function setMem($a)
+    public function setMem()
     {
-        $this->a = $a;
-		$this->mem = $a;
+        if (is_numeric($this->result))
+        {
+            $this->mem = $this->result;
+            $this->a = $this->mem;
+        }
     }
 
+    public function getErrors()
+    {
+        return $this->errors;
+    }
 }
 
 ?>
