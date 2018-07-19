@@ -49,14 +49,11 @@ echo "</table>";
 	echo "<h3>No files uploaded!</h3>";
 }
 
-if ($errorUpload)
+if ($errors)
 {
-echo "<p class='errors'>Error: ".$errorUpload."</p>";
-}
-
-if ($errorRemove)
-{
-echo "<p class='errors'>Error: ".$errorRemove."</p>";
+    foreach ($errors as $error) {
+        echo "<p class='errors'>Error: ".$error."</p>";
+    }
 }
 
 ?>
