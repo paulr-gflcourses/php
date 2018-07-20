@@ -45,7 +45,7 @@ class Calc
             return DIVISION_BY_ZERO;
         }else
         {
-            $this->result = $this->a/$this->b;
+            $this->result = round($this->a/$this->b, 3);
             return $this->result;
         }
     }
@@ -58,7 +58,7 @@ class Calc
             return NEGATIVE_SQUARE_ROOT;
         }else
         {
-            $this->result = sqrt($this->a);
+            $this->result = round(sqrt($this->a), 3);
             return $this->result;
 
         }
@@ -79,12 +79,12 @@ class Calc
 
     public function frac()
     {
-        if ($this->b===0)
+        if ($this->a===0)
         {
             return DIVISION_BY_ZERO;
         }else
         {
-            $this->result = 1/$this->a;
+            $this->result = round(1/$this->a, 3);
             return $this->result;
         }
 
