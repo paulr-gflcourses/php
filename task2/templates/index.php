@@ -6,13 +6,14 @@
 <h3>Calculator</h3>
 
 <?php echo "<p>a=$a, b=$b</p>";?>
-<p>
-   Result:
-	<ul>
+
+   
+
 <?php
 if(!$errors)
-{
-
+{			
+			echo "<h2>Result</h2>";
+			echo "<ul>";
 			echo "<li>$a + $b = $add</li>";
 			echo "<li>$a - $b = $substract</li>";
 			echo "<li>$a * $b = $multiply</li>";
@@ -21,21 +22,24 @@ if(!$errors)
 			echo "<li>$a % $b = $mod</li>";
 			echo "<li>1/$a = $frac</li>";
 			echo "<li>-($a) = $neg</li>";
-			echo "<li>setting mem ($mem)</li>";
-			echo "<li>addimg mem ($mem): $mem + $b = $memOper</li>";
+			echo "<li>setting mem ($mem): mem = $mem</li>";
+			echo "<li>addimg to mem ($mem): $mem + $b = $memOper</li>";
+			echo "<li>restoring mem ($mem) and substracting: $mem - $b = $memRestoring</li>";
+			echo "<li>clearing mem: mem = $memCleared</li>";
+			echo "</ul>";
 }else
 {
 
-			echo "<li>Some errors have happened:</li>";
+			echo "<h2>Some errors have happened:</h2>";
             foreach ($errors as $error) {
-                echo "<li>$error</li>";
+                echo "<p>$error</p>";
             }
 }
 		?>
 		
-	</ul>
 
-<p>
+
+
 
 </body>
 </html>

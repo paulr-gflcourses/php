@@ -71,7 +71,6 @@ class Calc
             return DIVISION_BY_ZERO;
         }else
         {
-
             $this->result = $this->a%$this->b;
             return $this->result;
         }
@@ -85,7 +84,6 @@ class Calc
             return DIVISION_BY_ZERO;
         }else
         {
-
             $this->result = 1/$this->a;
             return $this->result;
         }
@@ -112,6 +110,16 @@ class Calc
             $this->mem = $this->result;
             $this->a = $this->mem;
         }
+    }
+	
+	public function restoreMem()
+	{
+		$this->a = $this->mem;
+	}
+	
+	public function clearMem()
+    {
+        $this->mem = 0;
     }
 
     public function getErrors()

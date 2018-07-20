@@ -3,9 +3,10 @@ include_once 'config.php';
 include_once 'libs/Calc.php';
 
 $a = 3;
-$b = 0;
+$b = 5;
 
 $calc = new Calc($a, $b);
+$errors=[];
 if (!$calc->getErrors())
 {
     $add = $calc->add();
@@ -19,6 +20,10 @@ if (!$calc->getErrors())
     $calc->setMem();
     $mem = $calc->getMem();
     $memOper = $calc->add();
+	$calc->restoreMem();
+	$memRestoring = $calc->substract();
+	$calc->clearMem();
+	$memCleared = $calc->getMem();
 }else
 {
     $errors=$calc->getErrors();
