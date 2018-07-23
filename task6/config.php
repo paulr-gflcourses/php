@@ -1,7 +1,7 @@
 <?php
 
     define("TEMPLATE_DIR",__DIR__."/templates/");
-    define("FILE_DIR",__DIR__."/files/");
-    define("TITLE","task");
+	define("TEMPLATE",TEMPLATE_DIR."index.php");
+    define("TITLE","task6");
 
 ?>
