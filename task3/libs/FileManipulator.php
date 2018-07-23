@@ -68,7 +68,7 @@ class FileManipulator{
 
     function saveFile()
     {
-        if ( is_writable(FILE_DIR))
+        if (is_writable(FILE_DIR))
         {
             $success = file_put_contents(FILE_DIR.FNAME_CHANGED, $this->file);
             if (!$success)
