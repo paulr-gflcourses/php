@@ -7,7 +7,8 @@ if (isset($_GET['action']))
 {
     $action=$_GET['action'];
     $error="";
-    switch ($action){
+    switch ($action)
+    {
     case 'upload':
         $error = upload();
         break;

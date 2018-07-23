@@ -1,0 +1,38 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+FILE_DIR	.\config.php	/^    define("FILE_DIR",__DIR__."\/files\/");$/;"	d
+FNAME	.\config.php	/^    define("FNAME",FILE_DIR."file");$/;"	d
+FNAME_CHANGED	.\config.php	/^    define("FNAME_CHANGED",FILE_DIR."file_changed");$/;"	d
+FileManipulator	.\libs\FileManipulator.php	/^class FileManipulator{$/;"	c
+TEMPLATE	.\config.php	/^	define("TEMPLATE",TEMPLATE_DIR."index.php");$/;"	d
+TEMPLATE_DIR	.\config.php	/^    define("TEMPLATE_DIR",__DIR__."\/templates\/");$/;"	d
+TITLE	.\config.php	/^	define("TITLE","task3");$/;"	d
+__construct	.\libs\FileManipulator.php	/^	function __construct($file)$/;"	f
+changeCharFromFile	.\libs\FileManipulator.php	/^function changeCharFromFile($snum, $cnum, $char)$/;"	f
+changeStringFromFile	.\libs\FileManipulator.php	/^function changeStringFromFile($snum, $line)$/;"	f
+charToReplace	.\index.php	/^$charToReplace = $fileMan->getCharFromFile($replacedStringNum2,$replacedCharNum);$/;"	v
+file	.\index.php	/^$file = file(FNAME);$/;"	v
+file	.\libs\FileManipulator.php	/^		$this->file = $file;$/;"	v
+file	.\libs\FileManipulator.php	/^	private $file;$/;"	v
+file2	.\index.php	/^$file2 = file(FNAME_CHANGED);$/;"	v
+fileChangedChars	.\index.php	/^$fileChangedChars='';$/;"	v
+fileChangedLines	.\index.php	/^$fileChangedLines='';$/;"	v
+fileMan	.\index.php	/^$fileMan = new FileManipulator($file);$/;"	v
+fileMan	.\index.php	/^$fileMan = new FileManipulator($file2);$/;"	v
+filePrintedChars	.\index.php	/^$filePrintedChars = '';$/;"	v
+filePrintedLines	.\index.php	/^$filePrintedLines = ''; $/;"	v
+getCharFromFile	.\libs\FileManipulator.php	/^function getCharFromFile($snum, $cnum)$/;"	f
+getStringFromFile	.\libs\FileManipulator.php	/^function getStringFromFile($snum)$/;"	f
+line	.\libs\FileManipulator.php	/^    $line = $this->getStringFromFile($snum);$/;"	v
+replacedChar	.\index.php	/^$replacedChar = "?";$/;"	v
+replacedCharNum	.\index.php	/^$replacedCharNum = 11;$/;"	v
+replacedString	.\index.php	/^$replacedString = "aaaaaaaaaaaaaaaaaaa";$/;"	v
+replacedStringNum	.\index.php	/^$replacedStringNum = 6;$/;"	v
+replacedStringNum2	.\index.php	/^$replacedStringNum2=10;$/;"	v
+saveFile	.\libs\FileManipulator.php	/^function saveFile()$/;"	f
+stringToReplace	.\index.php	/^$stringToReplace = $fileMan->getStringFromFile($replacedStringNum);$/;"	v
+stringToReplace2	.\index.php	/^$stringToReplace2 = $fileMan->getStringFromFile($replacedStringNum2);$/;"	v

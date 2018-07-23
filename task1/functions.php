@@ -22,9 +22,9 @@ function upload()
             return ERR_UPLOADING;
         }
     }else
-        {
-            return ERR_WRITING_NOT_ALLOWED;
-        }
+    {
+        return ERR_WRITING_NOT_ALLOWED;
+    }
     return '';
 }
 
@@ -56,9 +56,9 @@ function remove($filename){
             return ERR_REMOVING;
         }
     }else 
-        {
-            return ERR_FILE_NOT_FOUND;
-        }
+    {
+        return ERR_FILE_NOT_FOUND;
+    }
 
     return '';
 }

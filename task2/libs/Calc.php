@@ -111,13 +111,13 @@ class Calc
             $this->a = $this->mem;
         }
     }
-	
-	public function restoreMem()
-	{
-		$this->a = $this->mem;
-	}
-	
-	public function clearMem()
+
+    public function restoreMem()
+    {
+        $this->a = $this->mem;
+    }
+
+    public function clearMem()
     {
         $this->mem = 0;
     }

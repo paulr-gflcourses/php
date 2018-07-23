@@ -2,48 +2,33 @@
 include_once "config.php";
 include_once "libs/FileManipulator.php";
 
-
-$file = file(FNAME);
-$fileMan = new FileManipulator($file);
-
-$filePrintedLines = ''; 
-for ($snum=0; $snum<count($file); $snum++)
+try
 {
-    $filePrintedLines .= $fileMan->getStringFromFile($snum); 
-}
+    $fileMan = new FileManipulator(FNAME);
+    $fileByString1 = $fileMan->printFileByString();
+    $fileByChar1 = $fileMan->printFileByChar();
 
-$filePrintedChars = '';
-for ($snum=0; $snum<count($file); $snum++)
+    $replacedStringNum = 6;
+    $replacedString = "---->CHANGED LINE";
+    $stringToReplace = $fileMan->getStringFromFile($replacedStringNum);
+    $fileMan->changeStringFromFile($replacedStringNum, $replacedString);
+
+    $replacedStringNum2=10;
+    $replacedCharNum = 11;
+    $replacedChar = "?";
+    $charToReplace = $fileMan->getCharFromFile($replacedStringNum2,$replacedCharNum);
+    $stringToReplace2 = $fileMan->getStringFromFile($replacedStringNum2);
+    $fileMan->changeCharFromFile($replacedStringNum2, $replacedCharNum, $replacedChar);
+
+    $fileMan->saveFile();
+    $fileMan = new FileManipulator(FNAME_CHANGED);
+    $fileByString2 = $fileMan->printFileByString();
+    $fileByChar2 = $fileMan->printFileByChar();
+
+}catch (Exception $e)
 {
-    for ($cnum=0;$cnum<strlen($file[$snum]);$cnum++)
-	{
-        $filePrintedChars .= $fileMan->getCharFromFile($snum, $cnum); 
-    }
+    $message = $e->getMessage();
 }
-
-$fileMan->changeStringFromFile(6,"aaaaaaaaaaaaaaaaaaa");
-$fileMan->changeCharFromFile(10,11,"?");
-$fileMan->saveFile();
-
-
-$file2 = file(FNAME_CHANGED);
-$fileMan = new FileManipulator($file2);
-$fileChangedLines='';
-
-for ($snum=0; $snum<count($file2); $snum++)
-{
-    $fileChangedLines .= $fileMan->getStringFromFile($snum); 
-}
-
-$fileChangedChars='';
-for ($snum=0; $snum<count($file2); $snum++)
-{
-    for ($cnum=0;$cnum<strlen($file2[$snum]);$cnum++)
-	{
-        $fileChangedChars .= $fileMan->getCharFromFile($snum, $cnum); 
-    }
-}
-
 include TEMPLATE;
 
 ?>
