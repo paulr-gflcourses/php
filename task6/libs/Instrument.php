@@ -7,8 +7,8 @@ class Instrument implements iInstrument
 
     public function __construct($name, $category)
     {
-        $this->name($name);
-        $this->category($category);
+        $this->name=$name;
+        $this->category=$category;
     }
 	
     public function getName()
