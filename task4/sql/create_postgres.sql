@@ -1,4 +1,4 @@
 CREATE TABLE IF NOT EXISTS PG_TEST(
-user_id CHAR(20),
-user_date CHAR(80)
+userid CHAR(20),
+userdate CHAR(80)
 );

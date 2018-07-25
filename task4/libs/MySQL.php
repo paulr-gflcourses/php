@@ -11,16 +11,17 @@ class MySQL extends SQL
 
     function connect()
     {
-        $dsn = "mysql:host=".HOSTNAME.";dbname=".DBNAME;
-        $link = new PDO($dsn, USERNAME, PASSWORD);
-        $this->setLink($link);
+        $this->setDsn("mysql:host=".HOSTNAME.";dbname=".DBNAME);
+        $this->setUsername(USERNAME);
+        $this->setPassword(PASSWORD);
+        parent::connect();
     }
 
     function select()
     {
         $userid = $this->getUserId();
         $table = $this->getTable();
-        $this->setSql("SELECT userid, userdata FROM $table WHERE userid='$userid'");
+        $this->setSql("SELECT userid, userdatas FROM $table WHERE userid='$userid'");
         return parent::select();
     }
 

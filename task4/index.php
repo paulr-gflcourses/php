@@ -4,29 +4,39 @@ include_once "libs/MySQL.php";
 include_once "libs/PostgreSQL.php";
 include_once "libs/SQL.php";
 
-$mysql = new MySQL();
-$postgres = new PostgreSQL();
-foreach ([$mysql, $postgres] as $db) {
+$errors=[];
 
-    $db->setUserId(USERID);
+try
+{
+    $mysql = new MySQL();
+    $postgres = new PostgreSQL();
+    foreach ([$mysql, $postgres] as $db) {
 
-    $selectResult[] = $db->select();
-    $selectSQL[] = $db->getSQL();
 
-    $db->setUserData("some new data...");
-    $db->insert();
-    $insertSQL[] = $db->getSQL();
-    $insertResult[] = $db->select();
+        $db->setUserId(USERID);
 
-    $db->setUserData("data after update");
-    $db->update();
-    $updateSQL[] = $db->getSQL();
-    $updateResult[] = $db->select();
+        $selectResult[] = $db->select();
+        $selectSQL[] = $db->getSQL();
 
-    $db->delete();
-    $deleteSQL[] = $db->getSQL();
-    $deleteResult[] = $db->select();
+        $db->setUserData("some new data...");
+        $db->insert();
+        $insertSQL[] = $db->getSQL();
+        $insertResult[] = $db->select();
+
+        $db->setUserData("data after update");
+        $db->update();
+        $updateSQL[] = $db->getSQL();
+        $updateResult[] = $db->select();
+
+        $db->delete();
+        $deleteSQL[] = $db->getSQL();
+        $deleteResult[] = $db->select();
+
+    }
+
+}catch (Exception $e)
+{
+    $errors[]=$e->getMessage();
 }
-
 include_once TEMPLATE;
 ?>

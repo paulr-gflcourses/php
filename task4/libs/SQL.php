@@ -8,6 +8,10 @@ class SQL
     private $userdata;
     private $sql;
 
+    private $dsn;
+    private $username;
+    private $password;
+
     function __construct($table)
     {
         $this->table = $table;
@@ -16,15 +20,35 @@ class SQL
 
     function connect()
     {
+        try 
+        {
+            $link = new PDO($this->getDsn(), $this->getUsername(), $this->getPassword());
+            $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->setLink($link);
+
+        }catch (PDOException $e) 
+        {
+            throw new Exception('Connection error: ' . $e->getMessage());
+        }
+
     }
 
     function select()
     {
+
         if ($this->userid)
         {
-            $res = $this->link->query($this->sql);
-            //$res->setFetchMode(PDO::FETCH_ASSOC);
+            try
+            {
+
+                $res = $this->link->query($this->sql);
+                //$res->setFetchMode(PDO::FETCH_ASSOC);
+            }catch(Exception $e)
+            {
+                throw new Exception("Error in query \n\"".$this->sql."\"\n: ".$e->getMessage());
+            }
             //return $res->fetchAll();
+            return $res;
         }else
         {
             return null;
@@ -122,6 +146,44 @@ class SQL
     function getTable()
     {
         return $this->table;
+    }
+
+    function setUsername($username)
+    {
+        if ($username && is_string($username))
+        {
+            $this->username = $username;
+        }
+    }
+
+    function getUsername()
+    {
+        return $this->username;
+    }
+
+    function setPassword($password)
+    {
+        if ($password && is_string($password))
+        {
+            $this->password = $password;
+        }
+    }
+
+    function getPassword()
+    {
+        return $this->password;
+    }
+    function setDsn($dsn)
+    {
+        if ($dsn && is_string($dsn))
+        {
+            $this->dsn = $dsn;
+        }
+    }
+
+    function getDsn()
+    {
+        return $this->dsn;
     }
 }
 
