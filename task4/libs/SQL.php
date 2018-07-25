@@ -10,8 +10,8 @@ class SQL
 
     function __construct($table)
     {
-        $this->connect();    
         $this->table = $table;
+        $this->connect();    
     }
 
     function connect()
@@ -23,8 +23,8 @@ class SQL
         if ($this->userid)
         {
             $res = $this->link->query($this->sql);
-            $res->setFetchMode(PDO::FETCH_ASSOC);
-            return $res->fetchAll();
+            //$res->setFetchMode(PDO::FETCH_ASSOC);
+            //return $res->fetchAll();
         }else
         {
             return null;
