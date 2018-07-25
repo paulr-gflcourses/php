@@ -12,9 +12,9 @@ function printSelect($selectResult)
         }
         echo "</table>";
     }else
-    {
-        echo '<p>No entries</p>';
-    }
+        {
+            echo '<p>No entries</p>';
+        }
 }
 
 
@@ -44,7 +44,7 @@ if ($errors)
     }
 }
 ?>
-
+<?php if (!$errors): ?>
 <h3>MySQL queries:</h3>
     <ol>
     <li>SELECT:</li>
@@ -91,6 +91,7 @@ if ($errors)
     <p>Result of the DELETE query:</p>
     <p><?php printSelect($deleteResult[1]);?></p>
     </ol>
+<?php endif; ?>
 
     </body>
 

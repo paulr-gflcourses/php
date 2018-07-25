@@ -35,8 +35,8 @@ try
     }
 
 }catch (Exception $e)
-{
-    $errors[]=$e->getMessage();
-}
+    {
+        $errors[]=$e->getMessage();
+    }
 include_once TEMPLATE;
 ?>

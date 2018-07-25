@@ -21,7 +21,7 @@ class MySQL extends SQL
     {
         $userid = $this->getUserId();
         $table = $this->getTable();
-        $this->setSql("SELECT userid, userdatas FROM $table WHERE userid='$userid'");
+        $this->setSql("SELECT userid, userdata FROM $table WHERE userid='$userid'");
         return parent::select();
     }
 

@@ -40,19 +40,16 @@ class SQL
         {
             try
             {
-
                 $res = $this->link->query($this->sql);
-                //$res->setFetchMode(PDO::FETCH_ASSOC);
             }catch(Exception $e)
             {
                 throw new Exception("Error in query \n\"".$this->sql."\"\n: ".$e->getMessage());
             }
-            //return $res->fetchAll();
             return $res;
         }else
-        {
-            return null;
-        }
+            {
+                return null;
+            }
     }
 
     function insert()
@@ -83,16 +80,38 @@ class SQL
     {
         if ($params && is_array($params))
         {
-            $statement = $this->link->prepare($this->sql);
-            $statement->execute($params);
+            try
+            {
+                $statement = $this->link->prepare($this->sql);
+                $statement->execute($params);
+
+            }catch(Exception $e)
+            {
+                throw new Exception("Error in query \n\"".$this->sql."\"\n: ".$e->getMessage());
+            }
         }    
+    }
+
+    function validString($str)
+    {
+        if ($str && is_string($str))
+        {
+            return true;
+        }else
+        {
+            return false;
+        }
     }
 
     function setUserId($userid)
     {
-        if ($userid && is_string($userid))
+        if ($this->validString($userid))
         {
             $this->userid = $userid;
+        }
+        else
+        {
+            throw new Exception('userid is not valid!');
         }
     }
 
@@ -103,9 +122,13 @@ class SQL
 
     function setUserData($userdata)
     {
-        if ($userdata && is_string($userdata))
+        if ($this->validString($userdata))
         {
             $this->userdata = $userdata;
+        }
+        else
+        {
+            throw new Exception('userdata is not valid!');
         }
     }
 
@@ -150,9 +173,13 @@ class SQL
 
     function setUsername($username)
     {
-        if ($username && is_string($username))
+        if ($this->validString($username))
         {
             $this->username = $username;
+        }
+        else
+        {
+            throw new Exception('username is not valid!');
         }
     }
 
@@ -163,9 +190,13 @@ class SQL
 
     function setPassword($password)
     {
-        if ($password && is_string($password))
+        if ($this->validString($password))
         {
             $this->password = $password;
+        }
+        else
+        {
+            throw new Exception('password is not valid!');
         }
     }
 
@@ -175,10 +206,7 @@ class SQL
     }
     function setDsn($dsn)
     {
-        if ($dsn && is_string($dsn))
-        {
-            $this->dsn = $dsn;
-        }
+        $this->dsn = $dsn;
     }
 
     function getDsn()

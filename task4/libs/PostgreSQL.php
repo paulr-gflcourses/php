@@ -11,9 +11,10 @@ class PostgreSQL extends SQL
 
     function connect()
     {
-        $dsn = "pgsql:host=".HOSTNAME.";dbname=".DBNAME;
-        $link = new PDO($dsn, USERNAME, PASSWORD);
-        $this->setLink($link);
+        $this->setDsn("pgsql:host=".HOSTNAME.";dbname=".DBNAME);
+        $this->setUsername(USERNAME);
+        $this->setPassword(PASSWORD);
+        parent::connect();
     }
 
     function select()
