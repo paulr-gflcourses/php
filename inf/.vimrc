@@ -91,6 +91,7 @@ let g:solarized_termcolors=256
 map <C-n> :NERDTreeToggle<CR>
 map <Leader> <Plug>(easymotion-prefix)
 
+map <F2> :w<Enter> :!php %<Enter>
 "---bufexplorer
 nmap <C-F5> <Esc>:BufExplorer<cr>
 vmap <C-F5> <esc>:BufExplorer<cr>
@@ -194,7 +195,7 @@ let g:syntastic_php_checkers = ['php', 'phpcs', 'phpmd']
 
 let g:airline_theme='simple'
 "set termguicolors
-"set t_Co=256
+set t_Co=256
 
 syntax on
 syntax enable
