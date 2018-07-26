@@ -12,21 +12,18 @@ $mysql = new MySQL();
 $key="key1";
 $val="val1";
 
-$key2="key2";
-$val2="val2";
+//$cookie->saveData($key,$val);
+//$getCookie = $cookie->getData($key);
+//$cookie->deleteData($key);
 
-$cookie->saveData($key,$val);
-$getCookie = $cookie->getData($key);
-$cookie->deleteData($key);
-
-$session->saveData($key,$val);
-$getSession = $session->getData($key);
-$session->deleteData($key);
+//$session->saveData($key,$val);
+//$getSession = $session->getData($key);
+//$session->deleteData($key);
 
 $mysql->saveData($key,$val);
 $getMySQL = $mysql->getData($key);
 $mysql->deleteData($key);
 
-include_once TEMPLATE_DIR."index.php";
+include_once TEMPLATE;
 
 ?>
