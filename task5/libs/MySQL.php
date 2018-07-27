@@ -10,7 +10,8 @@ class MySQL implements iWorkData
 
     function connect()
     {
-        try{
+        try
+        {
             $dsn = "mysql:host=".HOSTNAME.";dbname=".DBNAME;
             $this->link = new PDO($dsn, USERNAME, PASSWORD);
             $this->link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -24,27 +25,43 @@ class MySQL implements iWorkData
 
     public function saveData($key, $val)
     {
-
-        $sql = "INSERT IGNORE INTO ".TABLE." (keydb,valdb) VALUES(?, ?)"; 
-        $statement = $this->link->prepare($sql);
-        $statement->execute(array($key, $val));
+        try
+        {
+            $sql = "INSERT IGNORE INTO ".TABLE." (keydb,valdb) VALUES(?, ?)"; 
+            $statement = $this->link->prepare($sql);
+            $statement->execute(array($key, $val));
+        }catch (PDOException $e) 
+        {
+            throw new Exception(ERR_MYSQL_SAVING. $e->getMessage());
+        }
     }
 
     public function getData($key)
     {
-        $sql = "SELECT valdb FROM ".TABLE." WHERE keydb='$key' ";
-        $res = $this->link->query($sql)->fetch();
-        return $res[0];
+        try
+        {
+            $sql = "SELECT valdb FROM ".TABLE." WHERE keydb='$key' ";
+            $res = $this->link->query($sql)->fetch();
 
+        }catch (PDOException $e) 
+        {
+            throw new Exception(ERR_MYSQL_GETTING. $e->getMessage());
+        }
+
+        return ($res)? $res[0] : false;
     }
 
     public function deleteData($key)
     { 
-        /*
-        $sql = "DELETE FROM ".TABLE." keydb=? AND valdb=?";
-        $statement = $this->$link->prepare($sql);
-        $statement->execute(array($key, $val));
-         */
+        try
+        {
+            $sql = "DELETE FROM ".TABLE." WHERE keydb=?";
+            $statement = $this->link->prepare($sql);
+            $statement->execute(array($key));
+        }catch (PDOException $e) 
+        {
+            throw new Exception(ERR_MYSQL_DELETING. $e->getMessage());
+        }
     }
 
 }

@@ -1,28 +1,51 @@
 <?php
-session_start();
 include_once "config.php";
 include_once "libs/Cookies.php";
 include_once "libs/Sessions.php";
 include_once "libs/MySQL.php";
 
-$cookie = new Cookies();
-$session = new Sessions();
-$mysql = new MySQL();
+$errors=[];
 
-$key="key1";
-$val="val1";
 
-//$cookie->saveData($key,$val);
-//$getCookie = $cookie->getData($key);
-//$cookie->deleteData($key);
+$key="MY_KEY";
+$val="Some value";
 
-//$session->saveData($key,$val);
-//$getSession = $session->getData($key);
-//$session->deleteData($key);
+try
+{
+    $cookie = new Cookies();
+    $cookie->saveData($key,$val);
+    $savedInCookie = $cookie->getData($key);
+    $cookie->deleteData($key);
+    $deletedInCookie = $cookie->getData($key);
+}catch(Exception $e)
+{
+    $errors[] = $e->getMessage();
+}
 
-$mysql->saveData($key,$val);
-$getMySQL = $mysql->getData($key);
-$mysql->deleteData($key);
+try
+{
+    $session = new Sessions();
+    $session->saveData($key,$val);
+    $savedInSession = $session->getData($key);
+    $session->deleteData($key);
+    $deletedInSession = $session->getData($key);
+}catch(Exception $e)
+{
+    $errors[] = $e->getMessage();
+}
+try
+{
+    $mysql = new MySQL();
+    $mysql->saveData($key,$val);
+    $savedMysql = $mysql->getData($key);
+    $mysql->deleteData($key);
+    $deletedMysql = $mysql->getData($key);
+
+}catch(Exception $e)
+{
+    $errors[] = $e->getMessage();
+}
+
 
 include_once TEMPLATE;
 
