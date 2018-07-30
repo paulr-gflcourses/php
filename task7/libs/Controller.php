@@ -19,7 +19,6 @@ class Controller
 				$this->pageDefault();	
 			}
 			
-            throw new Exception('test exception');
 			$this->view->templateRender();			
 	    }	
 		

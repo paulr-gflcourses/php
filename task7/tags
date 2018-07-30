@@ -1,0 +1,39 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+Controller	.\libs\Controller.php	/^class Controller$/;"	c
+Model	.\libs\Model.php	/^class Model$/;"	c
+TEMPLATE	.\config.php	/^define("TEMPLATE", 'templates\/index.php');$/;"	d
+View	.\libs\View.php	/^class View$/;"	c
+__construct	.\libs\Controller.php	/^		public function __construct()$/;"	f
+__construct	.\libs\Model.php	/^   public function __construct()$/;"	f
+__construct	.\libs\View.php	/^	public function __construct($template)$/;"	f
+addToReplace	.\libs\View.php	/^	public function addToReplace($mArray)$/;"	f
+array	.\libs\Model.php	/^        $this->array = array('%TITLE%'=>'Contact Form', '%ERRORS%'=>'', '%ERRNAME%'=>'', '%ERRMAIL%'=>'','%ERRSUBJECT%'=>'', '%ERRMSG%'=>'', '%NAME%'=>'', '%EMAIL%'=>'', '%SUBJECT%'=>'', '%MESSAGE%'=>'');	$/;"	v
+array	.\libs\Model.php	/^    private $array;$/;"	v
+checkForm	.\libs\Model.php	/^	public function checkForm() {$/;"	f
+email	.\libs\Model.php	/^        $email = $_POST['email'];$/;"	v
+file	.\libs\View.php	/^			$this->file = str_replace($key, $val, $this->file);$/;"	v
+file	.\libs\View.php	/^		  $this->file = file_get_contents($template);$/;"	v
+file	.\libs\View.php	/^	private $file;$/;"	v
+forRender	.\libs\View.php	/^	private $forRender;$/;"	v
+getArray	.\libs\Model.php	/^	public function getArray()$/;"	f
+key	.\libs\View.php	/^		foreach($this->forRender as $key=>$val)$/;"	v
+key	.\libs\View.php	/^	  foreach($mArray as $key=>$val)$/;"	v
+mArray	.\libs\Controller.php	/^			$mArray = $this->model->getArray();		$/;"	v
+mArray	.\libs\Controller.php	/^		   $mArray = $this->model->getArray();		$/;"	v
+message	.\libs\Model.php	/^        $message = $_POST['message'];$/;"	v
+model	.\libs\Controller.php	/^		    $this->model = new Model();$/;"	v
+model	.\libs\Controller.php	/^		private $model;$/;"	v
+name	.\libs\Model.php	/^        $name = $_POST['name'];$/;"	v
+obj	.\index.php	/^  $obj = new Controller();$/;"	v
+pageDefault	.\libs\Controller.php	/^		private function pageDefault()$/;"	f
+pageSendMail	.\libs\Controller.php	/^		private function pageSendMail()$/;"	f
+sendEmail	.\libs\Model.php	/^	public function sendEmail()$/;"	f
+subject	.\libs\Model.php	/^        $subject = $_POST['subject'];$/;"	v
+templateRender	.\libs\View.php	/^	public function templateRender()$/;"	f
+view	.\libs\Controller.php	/^			$this->view = new View(TEMPLATE);	$/;"	v
+view	.\libs\Controller.php	/^		private $view;$/;"	v
