@@ -22,7 +22,8 @@ class View
 	{
 		foreach($this->forRender as $key=>$val)
 		{
-			$this->file = str_replace($key, $val, $this->file);
+            $replacedValue = PLACEHOLDER.$key.PLACEHOLDER;
+			$this->file = str_replace($replacedValue, $val, $this->file);
 		}													
 		echo $this->file;
     }

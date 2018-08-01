@@ -10,11 +10,10 @@ class Controller
 		    $this->model = new Model();
 			$this->view = new View(TEMPLATE);	
 
-            $search = 'php';
-            $this->model->getPage('https://www.google.com.ua/search?q='.$search);
-			if(isset($_POST['email']))
+			if(isset($_POST['search']) && ($_POST['search']))
 			{	
-				$this->pageSendMail();
+                $this->model->getPage();
+				$this->pageDefault();	
 			}
 			else
 			{
@@ -24,15 +23,6 @@ class Controller
 			$this->view->templateRender();			
 	    }	
 		
-		private function pageSendMail()
-		{
-			if($this->model->checkForm() === true)
-			{
-				$this->model->sendEmail();
-			}
-			$mArray = $this->model->getArray();		
-	        $this->view->addToReplace($mArray);	
-		}	
 			    
 		private function pageDefault()
 		{   
