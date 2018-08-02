@@ -31,8 +31,8 @@ class Model
 
     private function search($url, $search)
     {
-        $ch = curl_init($url.$search);
-        curl_setopt($ch, CURLOPT_URL, $url);
+        $ch=curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url.$search);
         curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_USERAGENT, USER_AGENT);
         $result = curl_exec($ch);
@@ -51,7 +51,14 @@ class Model
 
     private function processResponse($response)
     {
-        return $response;
+        $dom = new DOMDocument;
+        $dom->loadHTML($response);
+
+        //$divs = $dom->getElementsByTagName("div");
+        //echo $divs->saveHTML();
+        $html = $dom->saveHTML();
+        //$html = '';
+        return $html;
     }
 
 }
