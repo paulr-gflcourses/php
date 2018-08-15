@@ -6,11 +6,13 @@ include_once "libs/SQL.php";
 
 $mysql = new MySQL();
 $postgres = new MySQL();
+$table = TABLE_MYSQL; 
+$userid = USERID;
 foreach ([$mysql, $postgres] as $db) {
 
     $db->setUserId(USERID);
+    $selectSQL[] = $db->select(['userid', 'userdata'])->from($table)->where('userid=',$userid)->getSQL();
 
-    $selectSQL[] = $db->select('userid, userdata')->from(':table')->where('userid=:userid')->getSQL();
 
     //$selectResult[] = $db->select();
     //$selectSQL[] = $db->getSQL();

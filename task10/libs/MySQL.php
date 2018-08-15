@@ -18,7 +18,8 @@ class MySQL extends SQL
 
     function select($fields)
     {
-        $this->addSql("SELECT $fields");
+        $fieldsStr=implode(', ', $fields);
+        $this->addSql("SELECT $fieldsStr");
         return $this;
     }
 
@@ -28,9 +29,11 @@ class MySQL extends SQL
         return $this;
     }
     
-    function where($conditions)
+    function where($condition, $param)
     {
-        $this->addSql(" WHERE $conditions");
+
+        $this->param = $param;
+        $this->addSql(" WHERE $condition ?");
         return $this;
     }
 

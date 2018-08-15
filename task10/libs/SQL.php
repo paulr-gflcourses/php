@@ -7,11 +7,14 @@ class SQL
     private $userid;
     private $userdata;
     private $sql;
+    private $params;
 
     function __construct($table)
     {
         $this->connect();    
         $this->table = $table;
+        $this->sql="";
+        $this->params = [];
     }
 
     function connect()
@@ -20,13 +23,14 @@ class SQL
 
     function select($fields)
     {
+
     }
 
     function from($table)
     {
     }
 
-    function where($conditions)
+    function where($conditions, $param)
     {
     }
 
@@ -35,7 +39,7 @@ class SQL
         if ($this->userid && $this->userdata)
         {
             $this->prepStmt(array($this->userid, $this->userdata));
-    }
+        }
     }
 
     function update()
@@ -54,6 +58,18 @@ class SQL
         }
     }
 
+    public function result()
+    {
+        $params = $this->params;
+        if ($params)
+        {
+            $statement = $this->link->prepare($this->sql);
+            $statement->execute($params);
+            return $statement->fetchAll();
+        }    
+        return false;
+
+    }
     private function prepStmt($params)
     {
         if ($params && is_array($params))
