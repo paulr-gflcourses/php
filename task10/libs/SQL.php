@@ -1,45 +1,74 @@
 <?php
 class SQL
 {
-
     private $link;
     private $table;
     private $userid;
     private $userdata;
     private $sql;
+    private $dsn;
+    private $username;
+    private $password;
+
     private $params;
 
     function __construct($table)
     {
-        $this->connect();    
         $this->table = $table;
-        $this->sql="";
-        $this->params = [];
+        $this->connect();    
+        $this->params=[];
     }
 
     function connect()
     {
+        try 
+        {
+            $link = new PDO($this->getDsn(), $this->getUsername(), $this->getPassword());
+            $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->setLink($link);
+        }catch (PDOException $e) 
+        {
+            throw new Exception('Connection error: ' . $e->getMessage());
+        }
     }
+
 
     function select($fields)
     {
-
     }
 
-    function from($table)
+    public function from($table)
     {
     }
 
-    function where($conditions, $param)
+    public function where($conditions, $param)
     {
     }
 
-    function insert()
+    public function addSQL($sql)
     {
-        if ($this->userid && $this->userdata)
-        {
-            $this->prepStmt(array($this->userid, $this->userdata));
-        }
+        $this->sql .= $sql;
+    }
+
+    public function result()
+    {
+       return $this->prepStmt($this->params)->fetchAll();
+    }
+
+    public function execute()
+    {
+       $this->prepStmt($this->params);
+    }
+    
+    
+
+    function insert($table, $columns)
+    {
+
+        //if ($this->userid && $this->userdata)
+        //{
+            //$this->prepStmt(array($this->userid, $this->userdata));
+        //}
     }
 
     function update()
@@ -58,36 +87,44 @@ class SQL
         }
     }
 
-    public function result()
-    {
-        $params = $this->params;
-        if ($params)
-        {
-            $statement = $this->link->prepare($this->sql);
-            $statement->execute($params);
-            return $statement->fetchAll();
-        }    
-        return false;
-
-    }
     private function prepStmt($params)
     {
         if ($params && is_array($params))
         {
-            $statement = $this->link->prepare($this->sql);
-            $statement->execute($params);
+            try
+            {
+                $statement = $this->link->prepare($this->sql);
+                $statement->execute($params);
+                $this->sql = "";
+                $this->params = [];
+                return $statement;
+            }catch(Exception $e)
+            {
+                throw new Exception("Error in query \n\"".$this->sql."\"\n: ".$e->getMessage());
+            }
         }    
     }
 
-    function addSQL($sql)
+    private function validString($str)
     {
-        $this->sql .= $sql;
+        if ($str && is_string($str))
+        {
+            return true;
+        }else
+        {
+            return false;
+        }
     }
+
     function setUserId($userid)
     {
-        if ($userid && is_string($userid))
+        if ($this->validString($userid))
         {
             $this->userid = $userid;
+        }
+        else
+        {
+            throw new Exception('userid is not valid!');
         }
     }
 
@@ -98,9 +135,13 @@ class SQL
 
     function setUserData($userdata)
     {
-        if ($userdata && is_string($userdata))
+        if ($this->validString($userdata))
         {
             $this->userdata = $userdata;
+        }
+        else
+        {
+            throw new Exception('userdata is not valid!');
         }
     }
 
@@ -108,7 +149,6 @@ class SQL
     {
         return $this->userdata;
     }
-
 
     function setSql($sql)
     {
@@ -142,6 +182,61 @@ class SQL
     {
         return $this->table;
     }
-}
 
+    function setUsername($username)
+    {
+        if ($this->validString($username))
+        {
+            $this->username = $username;
+        }
+        else
+        {
+            throw new Exception('username is not valid!');
+        }
+    }
+
+    function getUsername()
+    {
+        return $this->username;
+    }
+
+    function setPassword($password)
+    {
+        if ($this->validString($password))
+        {
+            $this->password = $password;
+        }
+        else
+        {
+            throw new Exception('password is not valid!');
+        }
+    }
+
+    function getPassword()
+    {
+        return $this->password;
+    }
+
+    function setDsn($dsn)
+    {
+        $this->dsn = $dsn;
+    }
+
+    function getDsn()
+    {
+        return $this->dsn;
+    }
+
+    protected function addParams($param)
+    {
+        if (is_array($param))
+        {
+            $this->params = array_merge($this->params, $param);
+        }else
+        {
+            $this->params[] = $param;
+        }
+    }
+
+}
 ?>

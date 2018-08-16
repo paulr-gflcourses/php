@@ -12,24 +12,27 @@ foreach ([$mysql, $postgres] as $db) {
 
     $db->setUserId(USERID);
     $selectSQL[] = $db->select(['userid', 'userdata'])->from($table)->where('userid=',$userid)->getSQL();
-
-
-    //$selectResult[] = $db->select();
+    $selectResult[] = $db->result();
     //$selectSQL[] = $db->getSQL();
 
-    //$db->setUserData("some new data...");
-    //$db->insert();
-    //$insertSQL[] = $db->getSQL();
+    $newData = "some new data..."; 
+    $db->setUserData($newData);
+    $db->insert($table, ['userid'=>USERID, 'userdata'=>$newData]);
+    $insertSQL[] = $db->getSQL();
+    $db->execute();
     //$insertResult[] = $db->select();
+    $insertResult[] = $db->select(['userid', 'userdata'])->from($table)->where('userid=',$userid)->result();
 
-    //$db->setUserData("data after update");
-    //$db->update();
-    //$updateSQL[] = $db->getSQL();
+    $db->setUserData("data after update");
+    $db->update();
+    $updateSQL[] = $db->getSQL();
     //$updateResult[] = $db->select();
+    $updateResult[] = $db->select(['userid', 'userdata'])->from($table)->where('userid=',$userid)->result();
 
-    //$db->delete();
-    //$deleteSQL[] = $db->getSQL();
+    $db->delete();
+    $deleteSQL[] = $db->getSQL();
     //$deleteResult[] = $db->select();
+    $deleteResult[] = $db->select(['userid', 'userdata'])->from($table)->where('userid=',$userid)->result();
 }
 
 include_once TEMPLATE;
